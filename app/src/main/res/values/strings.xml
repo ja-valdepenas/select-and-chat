@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Select &amp; Chat</string>
+
+    <!--
+      Shown in the floating text-selection toolbar. The toolbar truncates aggressively and
+      usually shows only two or three items before collapsing into the overflow menu, so if
+      this clips badly on a real device, "Chat on WA" is the drop-in shorter alternative.
+    -->
+    <string name="toolbar_action_label">Chat on WhatsApp</string>
+
+    <string name="pick_a_number">Pick a number</string>
+    <string name="no_number_found">No phone number in that selection</string>
+    <string name="no_number_explainer">This action shows up for every text selection — Android gives apps no way to limit it to numbers. Type one below instead.</string>
+    <string name="needs_region_explainer">That looks like a local number, but no country is set yet. Pick one and it will be remembered.</string>
+    <string name="unsure_hint">Doesn\'t look like a real number — check it first</string>
+    <string name="enter_a_number">Enter a number</string>
+    <string name="open_chat">Open chat</string>
+    <string name="country">Country</string>
+    <string name="choose_country">Choose a country</string>
+    <string name="search_countries">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="or_type_one">Or type a number</string>
+    <string name="whatsapp_not_installed">WhatsApp isn\'t installed on this device</string>
+    <string name="settings">Settings</string>
+    <string name="default_country">Default country</string>
+    <string name="default_country_explainer">Used for local numbers written without a country code.</string>
+    <string name="open_with">Open chats in</string>
+    <string name="whatsapp_standard">WhatsApp</string>
+    <string name="whatsapp_business">WhatsApp Business</string>
+    <string name="not_installed_suffix">(not installed)</string>
+    <string name="how_to_title">How to use it</string>
+    <string name="how_to_body">Select a phone number anywhere on your phone, then tap <b>Chat on WhatsApp</b> in the selection toolbar. If you don\'t see it, look under the ⋮ overflow menu.\n\nYou can also share text to Select &amp; Chat, or type a number below.</string>
+    <string name="disclaimer">Not affiliated with or endorsed by WhatsApp or Meta.</string>
+</resources>

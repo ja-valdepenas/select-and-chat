@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SelectAndChat" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!--
+      ProcessTextActivity renders nothing in the common case: it resolves the number,
+      fires the intent and finishes. A translucent window with no animation keeps that
+      path visually silent. The bottom sheet supplies its own scrim when it is needed,
+      so window dimming stays off.
+    -->
+    <style name="Theme.SelectAndChat.Translucent" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+</resources>
