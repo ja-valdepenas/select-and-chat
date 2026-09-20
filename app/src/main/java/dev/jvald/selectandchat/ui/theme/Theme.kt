@@ -3,6 +3,7 @@ package dev.jvald.selectandchat.ui.theme
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
@@ -31,10 +32,12 @@ fun SelectAndChatTheme(
                 if (systemDark) GreenDarkColors else LightColors
             }
     }
+    // material3 1.5 carries the Expressive shape scale and type roles in its defaults, so
+    // only the motion scheme has to be opted into: springs with overshoot instead of
+    // easing curves.
     MaterialTheme(
         colorScheme = colors,
-        shapes = ExpressiveShapes,
-        typography = ExpressiveTypography,
+        motionScheme = MotionScheme.expressive(),
         content = content,
     )
 }

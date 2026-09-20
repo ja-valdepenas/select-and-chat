@@ -376,8 +376,9 @@ fun NumberEntryCard(
                     .height(56.dp),
             ) {
                 Text(
+                    // The one place emphasis is spent on this screen: the primary action.
                     stringResource(R.string.open_chat),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleMediumEmphasized,
                 )
             }
         }

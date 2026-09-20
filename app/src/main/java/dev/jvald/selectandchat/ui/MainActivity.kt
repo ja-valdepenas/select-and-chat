@@ -51,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import dev.jvald.selectandchat.R
@@ -65,7 +66,6 @@ import dev.jvald.selectandchat.core.Prefs
 import dev.jvald.selectandchat.core.TemplateStore
 import dev.jvald.selectandchat.core.WhatsAppFlavor
 import dev.jvald.selectandchat.core.WhatsAppLauncher
-import dev.jvald.selectandchat.ui.theme.ExpressiveMotion
 import dev.jvald.selectandchat.ui.theme.SelectAndChatTheme
 
 private enum class Destination { NEW, RECENTS, SETTINGS }
@@ -199,6 +199,10 @@ private fun AppScaffold(
             }
         },
     ) { padding ->
+        // Read outside transitionSpec: that lambda is not composable.
+        val spatial = MaterialTheme.motionScheme.defaultSpatialSpec<IntOffset>()
+        val effects = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
+
         AnimatedContent(
             targetState = destination,
             modifier = Modifier
@@ -209,10 +213,10 @@ private fun AppScaffold(
                 // overshoot rather than easing to a stop. The slide is short because the
                 // tabs are peers, not a hierarchy.
                 val forward = targetState.ordinal > initialState.ordinal
-                val enter = slideInHorizontally(ExpressiveMotion.spatial()) { width ->
+                val enter = slideInHorizontally(spatial) { width ->
                     if (forward) width / 8 else -width / 8
-                } + fadeIn(ExpressiveMotion.effects())
-                enter togetherWith fadeOut(ExpressiveMotion.effects())
+                } + fadeIn(effects)
+                enter togetherWith fadeOut(effects)
             },
             label = "destination",
         ) { current ->
