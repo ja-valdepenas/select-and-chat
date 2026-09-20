@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import dev.jvald.selectandchat.R
 import dev.jvald.selectandchat.core.Extraction
+import dev.jvald.selectandchat.core.HistoryStore
 import dev.jvald.selectandchat.core.PhoneCandidate
 import dev.jvald.selectandchat.core.PhoneNumberExtractor
 import dev.jvald.selectandchat.core.Prefs
@@ -28,10 +29,12 @@ import dev.jvald.selectandchat.ui.theme.SelectAndChatTheme
 class ProcessTextActivity : ComponentActivity() {
 
     private lateinit var prefs: Prefs
+    private lateinit var history: HistoryStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prefs = Prefs(this)
+        history = HistoryStore(this)
         prefs.seedRegionIfUnset(this)
 
         val selection = intent.selectedText()
@@ -54,7 +57,11 @@ class ProcessTextActivity : ComponentActivity() {
 
     private fun openChat(candidate: PhoneCandidate) {
         val opened = WhatsAppLauncher.openChat(this, candidate.e164, prefs.preferredFlavor)
-        if (!opened) {
+        if (opened) {
+            // Recorded here too, so numbers reached from the selection toolbar - the main
+            // way this app is used - show up in Recents alongside typed ones.
+            history.record(candidate.e164)
+        } else {
             Toast.makeText(this, R.string.whatsapp_not_installed, Toast.LENGTH_LONG).show()
         }
         dismiss()

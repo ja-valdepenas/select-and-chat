@@ -56,4 +56,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit)
+    // android.jar stubs org.json in unit tests, so the codec needs a real implementation
+    // to be exercised on the JVM.
+    testImplementation(libs.json)
 }

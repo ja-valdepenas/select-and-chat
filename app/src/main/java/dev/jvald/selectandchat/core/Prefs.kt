@@ -33,6 +33,11 @@ class Prefs(context: Context) {
         get() = AppTheme.from(prefs.getString(KEY_THEME, null))
         set(value) = prefs.edit().putString(KEY_THEME, value.name).apply()
 
+    /** Set once the user dismisses the explainer card, so it stays gone. */
+    var howItWorksDismissed: Boolean
+        get() = prefs.getBoolean(KEY_HOW_IT_WORKS_DISMISSED, false)
+        set(value) = prefs.edit().putBoolean(KEY_HOW_IT_WORKS_DISMISSED, value).apply()
+
     /**
      * Detects the country once, on first run. After this the country is a manual setting:
      * it only ever changes because the user changed it, so travelling or roaming never
@@ -69,5 +74,6 @@ class Prefs(context: Context) {
         const val KEY_REGION = "region"
         const val KEY_FLAVOR = "preferred_flavor"
         const val KEY_THEME = "theme"
+        const val KEY_HOW_IT_WORKS_DISMISSED = "how_it_works_dismissed"
     }
 }

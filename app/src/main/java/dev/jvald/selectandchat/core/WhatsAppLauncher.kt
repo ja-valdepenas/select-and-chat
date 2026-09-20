@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import java.net.URLEncoder
 
 enum class WhatsAppFlavor(val packageName: String) {
     STANDARD("com.whatsapp"),
@@ -30,10 +31,20 @@ object WhatsAppLauncher {
      * VIEW intent gets caught by Chrome or an in-app webview and lands on the WhatsApp
      * Web login wall instead of the chat.
      */
-    fun openChat(context: Context, e164: String, preferred: WhatsAppFlavor): Boolean {
+    fun openChat(
+        context: Context,
+        e164: String,
+        preferred: WhatsAppFlavor,
+        message: String? = null,
+    ): Boolean {
         val digits = e164.filter(Char::isDigit)
         if (digits.isEmpty()) return false
-        val uri = Uri.parse("https://wa.me/$digits")
+        // wa.me takes the opening message as a query parameter, so a template costs
+        // nothing beyond the URL itself.
+        val suffix = message?.takeIf { it.isNotBlank() }
+            ?.let { "?text=" + URLEncoder.encode(it, "UTF-8") }
+            .orEmpty()
+        val uri = Uri.parse("https://wa.me/$digits$suffix")
 
         val order = listOf(preferred) + WhatsAppFlavor.entries.filter { it != preferred }
         for (flavor in order) {
