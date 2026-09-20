@@ -4,6 +4,8 @@ import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.PhoneNumberUtil.Leniency
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat
+import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberType
+import com.google.i18n.phonenumbers.PhoneNumberUtil.ValidationResult
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 
 /** One phone number resolved out of a text selection, pre-formatted for display. */
@@ -31,6 +33,23 @@ data class Extraction(
     /** Digits lifted from the selection, used to prefill manual entry. */
     val digitsHint: String,
 )
+
+
+/** How the digits typed so far measure up against the selected country. */
+enum class LengthCheck { EMPTY, TOO_SHORT, OK, TOO_LONG, WRONG_LENGTH, UNKNOWN }
+
+data class NumberFeedback(
+    val check: LengthCheck,
+    /** Digits in a typical number for the region, for the hint text. Null if unknown. */
+    val expectedDigits: Int?,
+) {
+    /**
+     * Whether to tell the user this number will not work. TOO_SHORT is excluded on
+     * purpose: every number is too short while it is still being typed.
+     */
+    val shouldWarn: Boolean
+        get() = check == LengthCheck.TOO_LONG || check == LengthCheck.WRONG_LENGTH
+}
 
 /**
  * Pulls phone numbers out of arbitrary selected text.
@@ -119,6 +138,49 @@ object PhoneNumberExtractor {
     ): List<PhoneCandidate> =
         util.findNumbers(raw, region, leniency, Long.MAX_VALUE)
             .map { it.number().toCandidate(confident) }
+
+    /**
+     * Length feedback for what the user has typed so far.
+     *
+     * The per-country rules come from libphonenumber's own metadata rather than a table
+     * we would have to maintain: countries change their numbering plans, and several
+     * allow more than one valid length, which a single "max digits" number cannot express.
+     */
+    fun checkLength(input: String, region: String?): NumberFeedback {
+        val expected = expectedDigitsFor(region)
+        val digits = input.count(Char::isDigit)
+        if (digits == 0) return NumberFeedback(LengthCheck.EMPTY, expected)
+        if (region.isNullOrBlank()) return NumberFeedback(LengthCheck.UNKNOWN, expected)
+
+        val number = try {
+            util.parse(input, region)
+        } catch (e: NumberParseException) {
+            // Unparseable so far is almost always a half-typed number.
+            return NumberFeedback(LengthCheck.TOO_SHORT, expected)
+        }
+
+        val check = when (util.isPossibleNumberWithReason(number)) {
+            ValidationResult.IS_POSSIBLE,
+            ValidationResult.IS_POSSIBLE_LOCAL_ONLY,
+            -> LengthCheck.OK
+
+            ValidationResult.TOO_SHORT -> LengthCheck.TOO_SHORT
+            ValidationResult.TOO_LONG -> LengthCheck.TOO_LONG
+            ValidationResult.INVALID_LENGTH -> LengthCheck.WRONG_LENGTH
+            else -> LengthCheck.UNKNOWN
+        }
+        return NumberFeedback(check, expected)
+    }
+
+    /** Digit count of a typical number for the region, taken from libphonenumber examples. */
+    private fun expectedDigitsFor(region: String?): Int? {
+        if (region.isNullOrBlank()) return null
+        return runCatching {
+            val example = util.getExampleNumberForType(region, PhoneNumberType.MOBILE)
+                ?: util.getExampleNumber(region)
+            example?.nationalNumber?.toString()?.length
+        }.getOrNull()
+    }
 
     private fun PhoneNumber.toCandidate(confident: Boolean) = PhoneCandidate(
         e164 = util.format(this, PhoneNumberFormat.E164),

@@ -3,6 +3,18 @@ package dev.jvald.selectandchat.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +45,31 @@ import dev.jvald.selectandchat.R
 import dev.jvald.selectandchat.core.Countries
 import dev.jvald.selectandchat.core.Country
 import dev.jvald.selectandchat.core.PhoneCandidate
+import dev.jvald.selectandchat.core.NumberFeedback
 import dev.jvald.selectandchat.core.PhoneNumberExtractor
+
+
+/**
+ * Warning shown when the digits typed cannot dial in the selected country. Silent while
+ * the number is merely incomplete, so it never nags mid-typing.
+ */
+@Composable
+fun LengthWarning(feedback: NumberFeedback, region: String?) {
+    if (!feedback.shouldWarn) return
+    val country = Countries.byIso(region)?.displayName ?: return
+    val expected = feedback.expectedDigits
+    Text(
+        when {
+            expected != null && feedback.check == dev.jvald.selectandchat.core.LengthCheck.TOO_LONG ->
+                stringResource(R.string.warning_too_long, country, expected)
+
+            expected != null -> stringResource(R.string.warning_wrong_length_hint, country, expected)
+            else -> stringResource(R.string.warning_wrong_length, country)
+        },
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.error,
+    )
+}
 
 /** One resolved number, tappable. */
 @Composable
@@ -108,7 +144,7 @@ fun CountryField(
 }
 
 @Composable
-private fun CountryDialog(onDismiss: () -> Unit, onSelect: (Country) -> Unit) {
+fun CountryDialog(onDismiss: () -> Unit, onSelect: (Country) -> Unit) {
     var query by remember { mutableStateOf("") }
     val results = remember(query) { Countries.search(query) }
 
@@ -159,6 +195,7 @@ fun ManualEntry(
 ) {
     var input by remember { mutableStateOf(initialNumber) }
     val parsed = remember(input, region) { PhoneNumberExtractor.parseManual(input, region) }
+    val feedback = remember(input, region) { PhoneNumberExtractor.checkLength(input, region) }
 
     Column {
         CountryField(
@@ -172,9 +209,11 @@ fun ManualEntry(
             label = { Text(stringResource(R.string.enter_a_number)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            isError = feedback.shouldWarn,
             supportingText = parsed?.let { { Text(it.international) } },
             modifier = Modifier.fillMaxWidth(),
         )
+        LengthWarning(feedback, region)
         Spacer(Modifier.height(12.dp))
         Button(
             onClick = { parsed?.let(onSubmit) },
@@ -182,6 +221,146 @@ fun ManualEntry(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(stringResource(R.string.open_chat))
+        }
+    }
+}
+
+/** A's explainer card, kept at the top so a first-time user is never lost. */
+@Composable
+fun HowItWorksCard(modifier: Modifier = Modifier) {
+    Surface(
+        color = MaterialTheme.colorScheme.primaryContainer,
+        shape = RoundedCornerShape(28.dp),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(Modifier.padding(20.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    Icons.Default.Info,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.size(20.dp),
+                )
+                Spacer(Modifier.width(10.dp))
+                Text(
+                    stringResource(R.string.how_it_works),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                stringResource(R.string.how_it_works_body),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+        }
+    }
+}
+
+/**
+ * The number is the hero: country code sits inline and opens the picker on tap, so the
+ * screen carries one country control instead of the two it used to show.
+ */
+@Composable
+fun NumberEntryCard(
+    region: String?,
+    onRegionClick: () -> Unit,
+    onSubmit: (PhoneCandidate) -> Unit,
+) {
+    var input by remember { mutableStateOf("") }
+    val parsed = remember(input, region) { PhoneNumberExtractor.parseManual(input, region) }
+    val feedback = remember(input, region) { PhoneNumberExtractor.checkLength(input, region) }
+    val country = Countries.byIso(region)
+
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        shape = RoundedCornerShape(28.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(Modifier.padding(20.dp)) {
+            Text(
+                stringResource(R.string.message_any_number),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(Modifier.height(4.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    country?.let { "+${it.callingCode}" } ?: "+?",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .clickable(onClick = onRegionClick)
+                        .padding(vertical = 8.dp, horizontal = 4.dp),
+                )
+                TextField(
+                    value = input,
+                    onValueChange = { input = it },
+                    placeholder = {
+                        Text(
+                            stringResource(R.string.number_placeholder),
+                            style = MaterialTheme.typography.headlineSmall,
+                        )
+                    },
+                    textStyle = MaterialTheme.typography.headlineSmall,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                    ),
+                    modifier = Modifier.weight(1f),
+                )
+            }
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            Spacer(Modifier.height(8.dp))
+            LengthWarning(feedback, region)
+            Spacer(Modifier.height(8.dp))
+            Button(
+                onClick = { parsed?.let(onSubmit) },
+                enabled = parsed != null,
+                shape = RoundedCornerShape(50),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+            ) {
+                Text(stringResource(R.string.open_chat), style = MaterialTheme.typography.titleMedium)
+            }
+        }
+    }
+}
+
+/** Tonal settings tile. Two of these replace the old label-and-control rows. */
+@Composable
+fun SettingTile(
+    label: String,
+    value: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        onClick = onClick,
+        color = MaterialTheme.colorScheme.secondaryContainer,
+        shape = RoundedCornerShape(24.dp),
+        modifier = modifier,
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text(
+                label,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                value,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                maxLines = 2,
+            )
         }
     }
 }

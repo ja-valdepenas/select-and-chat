@@ -39,6 +39,24 @@ anything looser is shown for confirmation first.
 suspend API would force a coroutine hop and reintroduce the visible flash the translucent
 no-UI path exists to avoid.
 
+**Number length warnings come from libphonenumber, not a table.** Valid lengths differ
+per country (8 in El Salvador, 10 in the US, 11 in Germany) and several countries accept
+more than one length, so `isPossibleNumberWithReason()` is consulted instead of a
+hardcoded maximum. Note that an over-length number often reports `INVALID_LENGTH` rather
+than `TOO_LONG` for exactly that reason - both are treated as "will not work". The
+warning stays silent while a number is merely incomplete, so it never nags mid-typing.
+
+**The country is detected once, then never again.** On first run only, the region is read
+from the SIM, falling back to the network, then the device locale. Neither
+`TelephonyManager` getter needs a runtime permission - verified on-device, since the app
+declares none. After that first guess it is a manual setting, so travelling or roaming
+never silently rewrites the number you are about to message.
+
+**Every screen sits inside a root `Surface`.** Without one, Compose never paints
+`colorScheme.background` (you get the Android window background from `themes.xml`
+instead) and `LocalContentColor` stays at its default black - which looked exactly like
+"the theme setting does nothing".
+
 **The country list is generated at runtime**, from libphonenumber's supported regions, the
 JDK's localized country names, and flag emoji built from ISO codes. No bundled
 `countries.json`, no flag images.

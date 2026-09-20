@@ -136,4 +136,68 @@ class PhoneNumberExtractorTest {
         )
         assertTrue(PhoneNumberExtractor.parseManual("612345678", "ES")!!.confident)
     }
+
+    // --- per-country length feedback -------------------------------------------------
+
+    @Test
+    fun `el salvador numbers are eight digits`() {
+        assertEquals(8, PhoneNumberExtractor.checkLength("7777", "SV").expectedDigits)
+    }
+
+    @Test
+    fun `length feedback tracks digits typed for SV`() {
+        fun fb(n: String) = PhoneNumberExtractor.checkLength(n, "SV")
+        assertEquals(LengthCheck.EMPTY, fb("").check)
+        assertEquals(LengthCheck.TOO_SHORT, fb("7777").check)
+        assertEquals(LengthCheck.OK, fb("77778888").check)
+
+        // Nine digits is not merely "over the maximum" for SV, which has more than one
+        // valid length, so libphonenumber reports INVALID_LENGTH. Either way the user
+        // must be warned.
+        assertEquals(LengthCheck.WRONG_LENGTH, fb("777788889").check)
+        assertEquals(LengthCheck.TOO_LONG, fb("7777888899999").check)
+    }
+
+    @Test
+    fun `only unusable lengths raise a warning`() {
+        fun warns(n: String, region: String) =
+            PhoneNumberExtractor.checkLength(n, region).shouldWarn
+
+        // Still typing must stay silent.
+        assertFalse(warns("", "SV"))
+        assertFalse(warns("7777", "SV"))
+        assertFalse(warns("77778888", "SV"))
+
+        // Anything that cannot dial must warn, whichever reason libphonenumber gives.
+        assertTrue(warns("777788889", "SV"))
+        assertTrue(warns("7777888899999", "SV"))
+        assertTrue(warns("65025300001", "US"))
+        assertFalse(warns("6502530000", "US"))
+    }
+
+    @Test
+    fun `length feedback adapts to a different country`() {
+        fun check(n: String) = PhoneNumberExtractor.checkLength(n, "US").check
+        // US numbers are ten digits, so eight is short here but fine in SV.
+        assertEquals(LengthCheck.TOO_SHORT, check("77778888"))
+        assertEquals(LengthCheck.OK, check("6502530000"))
+        assertEquals(LengthCheck.TOO_LONG, check("65025300001"))
+        assertEquals(10, PhoneNumberExtractor.checkLength("650", "US").expectedDigits)
+    }
+
+    @Test
+    fun `length feedback is unknown without a country`() {
+        assertEquals(LengthCheck.UNKNOWN, PhoneNumberExtractor.checkLength("77778888", null).check)
+    }
+
+    /** Prints real expected lengths across regions, so the hint text can be sanity checked. */
+    @Test
+    fun `probe expected digits across regions`() {
+        println("--- expected digits ---")
+        for (iso in listOf("SV", "US", "ES", "GB", "MX", "DE", "IN", "BR", "JP", "AU")) {
+            val fb = PhoneNumberExtractor.checkLength("1", iso)
+            println("%s -> %s".format(iso, fb.expectedDigits))
+        }
+        println("--- end ---")
+    }
 }

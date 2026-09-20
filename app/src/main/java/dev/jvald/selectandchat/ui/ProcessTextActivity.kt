@@ -62,7 +62,7 @@ class ProcessTextActivity : ComponentActivity() {
 
     private fun showSheet(selection: CharSequence?, initial: Extraction) {
         setContent {
-            SelectAndChatTheme {
+            SelectAndChatTheme(theme = prefs.theme) {
                 var region by remember { mutableStateOf(prefs.region) }
                 var extraction by remember { mutableStateOf(initial) }
 

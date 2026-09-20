@@ -7,7 +7,7 @@
       usually shows only two or three items before collapsing into the overflow menu, so if
       this clips badly on a real device, "Chat on WA" is the drop-in shorter alternative.
     -->
-    <string name="toolbar_action_label">Chat on WhatsApp</string>
+    <string name="toolbar_action_label"><font color="#10B981">🗨︎</font> Chat on WhatsApp</string>
 
     <string name="pick_a_number">Pick a number</string>
     <string name="no_number_found">No phone number in that selection</string>
@@ -32,4 +32,21 @@
     <string name="how_to_title">How to use it</string>
     <string name="how_to_body">Select a phone number anywhere on your phone, then tap <b>Chat on WhatsApp</b> in the selection toolbar. If you don\'t see it, look under the ⋮ overflow menu.\n\nYou can also share text to Select &amp; Chat, or type a number below.</string>
     <string name="disclaimer">Not affiliated with or endorsed by WhatsApp or Meta.</string>
+    <string name="headline_title">Select\n&amp; Chat</string>
+    <string name="how_it_works">How it works</string>
+    <string name="how_it_works_body">Select any phone number, then tap Chat on WhatsApp in the selection toolbar. If you don\'t see it, look under the overflow menu.</string>
+    <string name="message_any_number">Message any number</string>
+    <string name="number_placeholder">7777 8888</string>
+    <string name="tile_country">Country</string>
+    <string name="tile_opens_in">Opens in</string>
+    <string name="theme">Theme</string>
+    <string name="theme_system">Follow system</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_amoled">AMOLED black</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dynamic">Follow wallpaper</string>
+    <string name="warning_too_long">That is too long for %1$s. Numbers there are usually %2$d digits.</string>
+    <string name="warning_wrong_length_hint">That will not work in %1$s. Numbers there are usually %2$d digits.</string>
+    <string name="warning_wrong_length">That is not a valid length for %1$s.</string>
 </resources>
