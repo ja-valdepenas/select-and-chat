@@ -9,6 +9,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,9 +24,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Info
@@ -62,6 +65,7 @@ import dev.jvald.selectandchat.core.Prefs
 import dev.jvald.selectandchat.core.TemplateStore
 import dev.jvald.selectandchat.core.WhatsAppFlavor
 import dev.jvald.selectandchat.core.WhatsAppLauncher
+import dev.jvald.selectandchat.ui.theme.ExpressiveMotion
 import dev.jvald.selectandchat.ui.theme.SelectAndChatTheme
 
 private enum class Destination { NEW, RECENTS, SETTINGS }
@@ -195,13 +199,24 @@ private fun AppScaffold(
             }
         },
     ) { padding ->
-        Column(
-            Modifier
+        AnimatedContent(
+            targetState = destination,
+            modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .verticalScroll(rememberScrollState()),
-        ) {
-            when (destination) {
+                .padding(padding),
+            transitionSpec = {
+                // Expressive motion is spring-based: screens settle with a little
+                // overshoot rather than easing to a stop. The slide is short because the
+                // tabs are peers, not a hierarchy.
+                val forward = targetState.ordinal > initialState.ordinal
+                val enter = slideInHorizontally(ExpressiveMotion.spatial()) { width ->
+                    if (forward) width / 8 else -width / 8
+                } + fadeIn(ExpressiveMotion.effects())
+                enter togetherWith fadeOut(ExpressiveMotion.effects())
+            },
+            label = "destination",
+        ) { current ->
+            when (current) {
                 Destination.NEW -> NewChatScreen(
                     region = region,
                     templates = templateList,

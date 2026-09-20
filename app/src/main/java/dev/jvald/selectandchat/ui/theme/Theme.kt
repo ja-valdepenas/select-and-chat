@@ -31,5 +31,10 @@ fun SelectAndChatTheme(
                 if (systemDark) GreenDarkColors else LightColors
             }
     }
-    MaterialTheme(colorScheme = colors, content = content)
+    MaterialTheme(
+        colorScheme = colors,
+        shapes = ExpressiveShapes,
+        typography = ExpressiveTypography,
+        content = content,
+    )
 }
