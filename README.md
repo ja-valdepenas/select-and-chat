@@ -34,10 +34,44 @@ last, forgiving one will resolve `Order #100045678` to a phone number because ni
 is a valid Spanish length. Only *confident* single matches skip straight to WhatsApp;
 anything looser is shown for confirmation first.
 
-**`Prefs` uses SharedPreferences, not DataStore.** It is read synchronously in
-`ProcessTextActivity.onCreate` before deciding whether to render anything. DataStore's
-suspend API would force a coroutine hop and reintroduce the visible flash the translucent
-no-UI path exists to avoid.
+**Settings live in DataStore, but the no-UI path reads them synchronously.**
+`SettingsRepository` exposes a `Flow<AppSettings>` for the ViewModel and a
+`blockingSnapshot()` for `ProcessTextActivity`, which decides whether to render anything
+at all inside `onCreate`. A coroutine hop there would reintroduce the visible flash that
+the translucent no-UI path exists to avoid, so that one caller blocks on a single file
+read — the same thing the SharedPreferences it replaced was doing. The three old
+SharedPreferences files are carried over once by a `DataMigration`.
+
+**minSdk is 33, on purpose.** Below Android 13 the per-app language store has to be
+backported by AppCompat, which means AppCompat themes on the window and a pre-Material-3
+look leaking into anything the platform draws. With 33 as the floor the app talks to
+`LocaleManager` directly, both activities are plain `ComponentActivity`, and the window
+theme is platform `Theme.DeviceDefault.DayNight` purely to dress the launch frame until
+`setContent` runs.
+
+**The language is not stored by this app at all.** It is written through `LocaleManager`,
+so Settings here and System settings > Apps > Select & Chat > Language are reading and
+editing the same value rather than two that can disagree. "System default" clears the
+override rather than writing one, which is what keeps a first launch following the device.
+
+**Colour is a tonal system, not a list of hex values.** See `ui/theme/Color.kt`: a source
+green is expanded into tonal palettes, and every Material role is that palette picked at a
+fixed tone, so contrast falls out of the tone arithmetic instead of being eyeballed. The
+five theme options — System, Light, Dark, Green, AMOLED — are the same role assignment
+over four different *neutral* ramps, which is why the accents and every contrast pairing
+are identical across all three dark ones. `SYSTEM` resolves to Green in the dark, because
+that is the app's own identity rather than plain grey.
+
+**Turning off "Save recent chats" does not delete what is already saved.** An earlier
+build wiped the history when the switch went off, on the grounds that a toggle leaving old
+data behind would be a lie. That conflates two things the user may want separately, and it
+makes an undoable switch destructive. The switch now only stops new chats being recorded;
+deleting lives behind **Manage history**, and clearing everything asks first because it
+affects many records at once.
+
+**Quick-message text is never touched.** Messages carry an id so they can be edited in
+place, and the text is stored exactly as typed — not normalised, not translated with the
+rest of the UI. It is URL-encoded only at the point it becomes a `wa.me?text=` parameter.
 
 **Number length warnings come from libphonenumber, not a table.** Valid lengths differ
 per country (8 in El Salvador, 10 in the US, 11 in Germany) and several countries accept
@@ -59,7 +93,15 @@ instead) and `LocalContentColor` stays at its default black - which looked exact
 
 **The country list is generated at runtime**, from libphonenumber's supported regions, the
 JDK's localized country names, and flag emoji built from ISO codes. No bundled
-`countries.json`, no flag images.
+`countries.json`, no flag images. It is a function of a `Locale` rather than a lazy
+singleton, because the app's language can change while it is running and a list built once
+at first use would keep showing "Germany" after a switch to Spanish.
+
+**The split button is two ordinary `Button`s, not `SplitButtonLayout`.** In material3
+1.5.0-alpha18 the shape types `SplitButtonDefaults` returns do not line up with what
+`Button` accepts, so the geometry — round on the outside, tight on the seam — is built
+here. Each half keeps its own touch target, focus stop and semantics, which is the point
+of the component.
 
 **Circle to Search / Google Lens will not show the item.** That overlay has a fixed,
 Google-controlled action list. The item appears in the standard selection toolbar — Chrome,
@@ -84,8 +126,20 @@ Requires JDK 17 and Android SDK 36.
 ./gradlew :app:testDebugUnitTest
 ```
 
-`PhoneNumberExtractor` has no Android dependencies, so its tests run on the plain JVM — no
-Robolectric.
+The JVM tests cover the pure layer — number extraction, the theme and language mappings,
+the quick-message and history rules, the `wa.me` URL encoding, the country search — plus
+two localization guards: every translatable string has a Spanish counterpart, and no
+user-visible text is hardcoded in a composable. No Robolectric.
+
+The Compose UI and accessibility tests need a device or emulator:
+
+```bash
+./gradlew :app:connectedDebugAndroidTest
+```
+
+They cover chip selection and its semantics, long-press Edit/Delete and the accessible
+alternatives to it, country search by name and by calling code, the two halves of the
+split button, and that Clear history is not reachable as a button on the Recents screen.
 
 Driving the real entry point without making a selection by hand:
 

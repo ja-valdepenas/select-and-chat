@@ -1,6 +1,5 @@
 package dev.jvald.selectandchat.core
 
-import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -58,54 +57,38 @@ object HistoryCodec {
     private const val KEY_AT = "t"
 }
 
-class HistoryStore(context: Context) {
+/**
+ * The list operations, pure so they can be tested directly. Persistence is
+ * [SettingsRepository]'s job; whether recording is allowed at all is decided there too.
+ */
+object HistoryRules {
 
-    private val prefs = context.applicationContext
-        .getSharedPreferences("select_and_chat_history", Context.MODE_PRIVATE)
-
-    /**
-     * History is the first thing this app retains about the user, so it can be switched
-     * off outright. Turning it off also discards what was already collected: a toggle
-     * that left the old data behind would be a lie.
-     */
-    var enabled: Boolean
-        get() = prefs.getBoolean(KEY_ENABLED, true)
-        set(value) {
-            prefs.edit().putBoolean(KEY_ENABLED, value).apply()
-            if (!value) clear()
-        }
-
-    fun all(): List<HistoryEntry> =
-        HistoryCodec.decode(prefs.getString(KEY_ENTRIES, null))
-            .sortedByDescending { it.lastOpenedAt }
+    const val MAX_ENTRIES = 50
 
     /** Records an open, keeping any label already attached to that number. */
-    fun record(e164: String) {
-        if (!enabled) return
-        val byNumber = all().associateBy { it.e164 }.toMutableMap()
+    fun record(
+        current: List<HistoryEntry>,
+        e164: String,
+        now: Long = System.currentTimeMillis(),
+    ): List<HistoryEntry> {
+        val byNumber = current.associateBy { it.e164 }.toMutableMap()
         byNumber[e164] = HistoryEntry(
             e164 = e164,
             label = byNumber[e164]?.label,
-            lastOpenedAt = System.currentTimeMillis(),
+            lastOpenedAt = now,
         )
-        write(byNumber.values.sortedByDescending { it.lastOpenedAt }.take(MAX_ENTRIES))
+        return byNumber.values.sortedByDescending { it.lastOpenedAt }.take(MAX_ENTRIES)
     }
 
-    fun setLabel(e164: String, label: String?) {
+    fun setLabel(
+        current: List<HistoryEntry>,
+        e164: String,
+        label: String?,
+    ): List<HistoryEntry> {
         val cleaned = label?.trim()?.takeIf { it.isNotEmpty() }
-        write(all().map { if (it.e164 == e164) it.copy(label = cleaned) else it })
+        return current.map { if (it.e164 == e164) it.copy(label = cleaned) else it }
     }
 
-    fun remove(e164: String) = write(all().filterNot { it.e164 == e164 })
-
-    fun clear() = prefs.edit().remove(KEY_ENTRIES).apply()
-
-    private fun write(entries: List<HistoryEntry>) =
-        prefs.edit().putString(KEY_ENTRIES, HistoryCodec.encode(entries)).apply()
-
-    private companion object {
-        const val KEY_ENTRIES = "entries"
-        const val KEY_ENABLED = "enabled"
-        const val MAX_ENTRIES = 50
-    }
+    fun remove(current: List<HistoryEntry>, e164: String): List<HistoryEntry> =
+        current.filterNot { it.e164 == e164 }
 }

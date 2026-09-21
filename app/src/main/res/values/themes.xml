@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.SelectAndChat" parent="android:Theme.Material.Light.NoActionBar" />
+    <!--
+      Platform DayNight, not AppCompat: with minSdk 33 there is nothing left to backport,
+      and this only has to dress the launch window until setContent runs and the Compose
+      colour scheme takes over.
+    -->
+    <style name="Theme.SelectAndChat" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
     <!--
       ProcessTextActivity renders nothing in the common case: it resolves the number,
@@ -9,7 +17,7 @@
       path visually silent. The bottom sheet supplies its own scrim when it is needed,
       so window dimming stays off.
     -->
-    <style name="Theme.SelectAndChat.Translucent" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.SelectAndChat.Translucent" parent="Theme.SelectAndChat">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Select &amp; Chat</string>
+    <string name="app_name" translatable="false">Select &amp; Chat</string>
 
     <!--
       Shown in the floating text-selection toolbar. The toolbar truncates aggressively and
@@ -9,71 +9,108 @@
     -->
     <string name="toolbar_action_label"><font color="#10B981">🗨︎</font> Chat on WhatsApp</string>
 
+    <!-- Header and tabs -->
+    <string name="app_title">New WhatsApp chat</string>
+    <string name="tab_new_chat">New chat</string>
+    <string name="tab_recents">Recents</string>
+    <string name="more_options">More options</string>
+    <string name="settings">Settings</string>
+
+    <!-- Three-dot menu -->
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="system_default">System default</string>
+    <string name="light_theme">Light</string>
+    <string name="dark_theme">Dark</string>
+    <string name="app_default_theme">App default</string>
+    <string name="amoled_theme">AMOLED black</string>
+    <!-- Language names stay in their own language in every locale. Do not translate. -->
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_spanish" translatable="false">Español</string>
+    <string name="manage_quick_messages">Manage quick messages</string>
+
+    <!-- Quick messages -->
+    <string name="quick_messages">Quick messages</string>
+    <string name="quick_messages_helper">Choose one to send — or hold to edit.</string>
+    <string name="add_quick_message">Add quick message</string>
+    <string name="quick_message">Quick message</string>
+    <string name="edit_quick_message">Edit quick message</string>
+    <string name="no_quick_messages">No quick messages yet.</string>
+    <string name="selected_message_helper">This message will be included when the chat opens.</string>
+    <string name="quick_message_selected">Selected</string>
+    <string name="quick_message_not_selected">Not selected</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="message_deleted">Message deleted</string>
+    <string name="undo">Undo</string>
+
+    <!-- Phone number -->
+    <string name="phone_number">Phone number</string>
+    <string name="number_placeholder" translatable="false">7777 8888</string>
+    <string name="clear_number">Clear phone number</string>
+    <string name="select_country">Select country</string>
+    <string name="search_country_or_code">Search country or code</string>
+    <string name="country_calling_code">%1$s, %2$s</string>
+    <string name="no_countries_found">No countries match that search.</string>
+    <plurals name="warning_too_long">
+        <item quantity="one">That is too long for %1$s. Numbers there are usually %2$d digit.</item>
+        <item quantity="other">That is too long for %1$s. Numbers there are usually %2$d digits.</item>
+    </plurals>
+    <plurals name="warning_wrong_length_hint">
+        <item quantity="one">That will not work in %1$s. Numbers there are usually %2$d digit.</item>
+        <item quantity="other">That will not work in %1$s. Numbers there are usually %2$d digits.</item>
+    </plurals>
+    <string name="warning_wrong_length">That is not a valid length for %1$s.</string>
+
+    <!-- Open in WhatsApp -->
+    <string name="open_in_whatsapp">Open in WhatsApp</string>
+    <string name="open_in_whatsapp_business">Open in WhatsApp Business</string>
+    <string name="choose_whatsapp_app">Choose which app to open</string>
+    <string name="whatsapp_standard" translatable="false">WhatsApp</string>
+    <string name="whatsapp_business" translatable="false">WhatsApp Business</string>
+    <string name="not_installed_suffix">(not installed)</string>
+    <string name="whatsapp_not_installed">WhatsApp isn\'t installed on this device</string>
+    <string name="opened_in_other_app">Opened in %1$s instead</string>
+
+    <!-- Clipboard pickup -->
+    <string name="found_in_clipboard">Found in clipboard</string>
+    <string name="use_it">Use</string>
+
+    <!-- How it works -->
+    <string name="how_it_works">How it works</string>
+    <string name="how_it_works_body">Select any phone number, then tap Chat on WhatsApp in the selection toolbar. If you don\'t see it, look under the overflow menu.</string>
+    <string name="dismiss">Dismiss</string>
+
+    <!-- Recents -->
+    <string name="save_recent_chats">Save recent chats</string>
+    <string name="stored_on_device">Stored only on this device.</string>
+    <string name="recent_chats">Recent chats</string>
+    <string name="just_now">Just now</string>
+    <string name="manage_history">Manage history</string>
+    <string name="manage_history_helper">Review or clear saved chats.</string>
+    <string name="clear_history">Clear history</string>
+    <string name="clear_history_body">This removes every number and label kept on this device.</string>
+    <string name="clear">Clear</string>
+    <string name="more_options_for">More options for %1$s</string>
+    <string name="history_empty_note">Numbers you open will show up here, so you can find them again without saving a contact.</string>
+    <string name="history_off_note">New chats aren\'t being saved. Anything already here is kept until you clear it.</string>
+    <string name="edit_label">Edit label</string>
+    <string name="label_hint">Plumber, Airbnb host, …</string>
+    <string name="save_contact">Save to contacts</string>
+    <string name="no_contacts_app">No contacts app available</string>
+    <string name="remove">Remove</string>
+    <string name="remove_number">Remove %1$s</string>
+
+    <!-- Selection toolbar sheet -->
     <string name="pick_a_number">Pick a number</string>
     <string name="no_number_found">No phone number in that selection</string>
     <string name="no_number_explainer">This action shows up for every text selection — Android gives apps no way to limit it to numbers. Type one below instead.</string>
     <string name="needs_region_explainer">That looks like a local number, but no country is set yet. Pick one and it will be remembered.</string>
     <string name="unsure_hint">Doesn\'t look like a real number — check it first</string>
-    <string name="enter_a_number">Enter a number</string>
-    <string name="open_chat">Open chat</string>
-    <string name="country">Country</string>
-    <string name="choose_country">Choose a country</string>
-    <string name="search_countries">Search</string>
-    <string name="cancel">Cancel</string>
     <string name="or_type_one">Or type a number</string>
-    <string name="whatsapp_not_installed">WhatsApp isn\'t installed on this device</string>
-    <string name="settings">Settings</string>
-    <string name="default_country">Default country</string>
-    <string name="default_country_explainer">Used for local numbers written without a country code.</string>
-    <string name="open_with">Open chats in</string>
-    <string name="whatsapp_standard">WhatsApp</string>
-    <string name="whatsapp_business">WhatsApp Business</string>
-    <string name="not_installed_suffix">(not installed)</string>
-    <string name="how_to_title">How to use it</string>
-    <string name="how_to_body">Select a phone number anywhere on your phone, then tap <b>Chat on WhatsApp</b> in the selection toolbar. If you don\'t see it, look under the ⋮ overflow menu.\n\nYou can also share text to Select &amp; Chat, or type a number below.</string>
-    <string name="disclaimer">Not affiliated with or endorsed by WhatsApp or Meta.</string>
-    <string name="headline_title">Select\n&amp; Chat</string>
-    <string name="how_it_works">How it works</string>
-    <string name="how_it_works_body">Select any phone number, then tap Chat on WhatsApp in the selection toolbar. If you don\'t see it, look under the overflow menu.</string>
-    <string name="message_any_number">Message any number</string>
-    <string name="number_placeholder">7777 8888</string>
-    <string name="tile_country">Country</string>
-    <string name="tile_opens_in">Opens in</string>
-    <string name="theme">Theme</string>
-    <string name="theme_system">Follow system</string>
-    <string name="theme_light">Light</string>
-    <string name="theme_dark">Dark</string>
-    <string name="theme_amoled">AMOLED black</string>
-    <string name="theme_green">Green</string>
-    <string name="theme_dynamic">Follow wallpaper</string>
-    <string name="warning_too_long">That is too long for %1$s. Numbers there are usually %2$d digits.</string>
-    <string name="warning_wrong_length_hint">That will not work in %1$s. Numbers there are usually %2$d digits.</string>
-    <string name="warning_wrong_length">That is not a valid length for %1$s.</string>
-    <string name="tab_new">New</string>
-    <string name="tab_recents">Recents</string>
-    <string name="tab_settings">Settings</string>
-    <string name="dismiss">Dismiss</string>
-    <string name="start_with">Start with</string>
-    <string name="add_message">Add a message</string>
-    <string name="message_hint">Your opening message</string>
-    <string name="quick_messages">Quick messages</string>
-    <string name="quick_messages_body">Tap one before opening a chat and it is typed for you.</string>
-    <string name="no_templates">No quick messages yet.</string>
-    <string name="found_in_clipboard">Found in clipboard</string>
-    <string name="use_it">Use</string>
-    <string name="add_a_label">Add a label</string>
-    <string name="edit_label">Edit label</string>
-    <string name="label_hint">Plumber, Airbnb host, …</string>
+
+    <!-- Shared -->
+    <string name="cancel">Cancel</string>
     <string name="save">Save</string>
-    <string name="save_contact">Save to contacts</string>
-    <string name="remove">Remove</string>
-    <string name="clear">Clear</string>
-    <string name="more_actions">More actions</string>
-    <string name="clear_history">Clear history</string>
-    <string name="clear_history_body">This removes every number and label kept on this device.</string>
-    <string name="history_empty_note">Numbers you open will show up here, so you can find them again without saving a contact.</string>
-    <string name="history_off_note">History is off. Turn it on in Settings to keep a list of numbers you have messaged.</string>
-    <string name="keep_history">Keep history</string>
-    <string name="keep_history_body">Stored only on this device. Turning this off deletes what is already saved.</string>
-    <string name="no_contacts_app">No contacts app available</string>
+    <string name="not_affiliated">Not affiliated with WhatsApp or Meta.</string>
 </resources>

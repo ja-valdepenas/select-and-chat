@@ -1,37 +1,30 @@
 package dev.jvald.selectandchat.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MotionScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import dev.jvald.selectandchat.core.AppTheme
+import dev.jvald.selectandchat.core.ThemePreference
 
 @Composable
 fun SelectAndChatTheme(
-    theme: AppTheme = AppTheme.SYSTEM,
+    theme: ThemePreference = ThemePreference.SYSTEM,
     content: @Composable () -> Unit,
 ) {
+    // isSystemInDarkTheme() reads the current configuration, so while the preference is
+    // SYSTEM a device that flips to dark at sunset recomposes this straight away —
+    // nothing is stored and nothing has to be re-read.
     val systemDark = isSystemInDarkTheme()
-    val context = LocalContext.current
 
     val colors = when (theme) {
-        AppTheme.LIGHT -> LightColors
-        AppTheme.DARK -> NeutralDarkColors
-        AppTheme.AMOLED -> AmoledColors
-        AppTheme.GREEN -> GreenDarkColors
-        AppTheme.SYSTEM -> if (systemDark) GreenDarkColors else LightColors
-        AppTheme.DYNAMIC ->
-            // Dynamic colour needs Android 12; fall back rather than showing a dead option.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                if (systemDark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-            } else {
-                if (systemDark) GreenDarkColors else LightColors
-            }
+        ThemePreference.LIGHT -> LightColors
+        ThemePreference.DARK -> GreyDarkColors
+        ThemePreference.APP_DEFAULT -> AppDefaultDarkColors
+        ThemePreference.AMOLED -> AmoledColors
+        // Following the system means the app's own identity in the dark, not plain grey.
+        ThemePreference.SYSTEM -> if (systemDark) AppDefaultDarkColors else LightColors
     }
+
     // material3 1.5 carries the Expressive shape scale and type roles in its defaults, so
     // only the motion scheme has to be opted into: springs with overshoot instead of
     // easing curves.

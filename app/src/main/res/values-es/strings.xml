@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="toolbar_action_label"><font color="#10B981">🗨︎</font> Chatear por WhatsApp</string>
+
+    <!-- Header and tabs -->
+    <string name="app_title">Nuevo chat de WhatsApp</string>
+    <string name="tab_new_chat">Nuevo chat</string>
+    <string name="tab_recents">Recientes</string>
+    <string name="more_options">Más opciones</string>
+    <string name="settings">Ajustes</string>
+
+    <!-- Three-dot menu -->
+    <string name="language">Idioma</string>
+    <string name="theme">Tema</string>
+    <string name="system_default">Predeterminado del sistema</string>
+    <string name="light_theme">Claro</string>
+    <string name="dark_theme">Oscuro</string>
+    <string name="app_default_theme">Predeterminado de la app</string>
+    <string name="amoled_theme">Negro AMOLED</string>
+    <string name="manage_quick_messages">Administrar mensajes rápidos</string>
+
+    <!-- Quick messages -->
+    <string name="quick_messages">Mensajes rápidos</string>
+    <string name="quick_messages_helper">Elige uno para enviar — o mantén pulsado para editarlo.</string>
+    <string name="add_quick_message">Añadir mensaje rápido</string>
+    <string name="quick_message">Mensaje rápido</string>
+    <string name="edit_quick_message">Editar mensaje rápido</string>
+    <string name="no_quick_messages">Aún no hay mensajes rápidos.</string>
+    <string name="selected_message_helper">Se incluirá al abrir el chat.</string>
+    <string name="quick_message_selected">Seleccionado</string>
+    <string name="quick_message_not_selected">No seleccionado</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="message_deleted">Mensaje eliminado</string>
+    <string name="undo">Deshacer</string>
+
+    <!-- Phone number -->
+    <string name="phone_number">Número de teléfono</string>
+    <string name="clear_number">Borrar el número de teléfono</string>
+    <string name="select_country">Seleccionar país</string>
+    <string name="search_country_or_code">Buscar país o código</string>
+    <string name="country_calling_code">%1$s, %2$s</string>
+    <string name="no_countries_found">Ningún país coincide con esa búsqueda.</string>
+    <plurals name="warning_too_long">
+        <item quantity="one">Es demasiado largo para %1$s. Allí los números suelen tener %2$d dígito.</item>
+        <item quantity="other">Es demasiado largo para %1$s. Allí los números suelen tener %2$d dígitos.</item>
+    </plurals>
+    <plurals name="warning_wrong_length_hint">
+        <item quantity="one">Eso no funcionará en %1$s. Allí los números suelen tener %2$d dígito.</item>
+        <item quantity="other">Eso no funcionará en %1$s. Allí los números suelen tener %2$d dígitos.</item>
+    </plurals>
+    <string name="warning_wrong_length">Esa no es una longitud válida para %1$s.</string>
+
+    <!-- Open in WhatsApp -->
+    <string name="open_in_whatsapp">Abrir en WhatsApp</string>
+    <string name="open_in_whatsapp_business">Abrir en WhatsApp Business</string>
+    <string name="choose_whatsapp_app">Elige con qué app abrir</string>
+    <string name="not_installed_suffix">(no instalada)</string>
+    <string name="whatsapp_not_installed">WhatsApp no está instalada en este dispositivo</string>
+    <string name="opened_in_other_app">Se abrió en %1$s</string>
+
+    <!-- Clipboard pickup -->
+    <string name="found_in_clipboard">Encontrado en el portapapeles</string>
+    <string name="use_it">Usar</string>
+
+    <!-- How it works -->
+    <string name="how_it_works">Cómo funciona</string>
+    <string name="how_it_works_body">Selecciona cualquier número de teléfono y toca Chatear por WhatsApp en la barra de selección. Si no aparece, búscalo en el menú de más opciones.</string>
+    <string name="dismiss">Descartar</string>
+
+    <!-- Recents -->
+    <string name="save_recent_chats">Guardar chats recientes</string>
+    <string name="stored_on_device">Guardados solo en este dispositivo.</string>
+    <string name="recent_chats">Chats recientes</string>
+    <string name="just_now">Ahora</string>
+    <string name="manage_history">Administrar historial</string>
+    <string name="manage_history_helper">Revisa o borra los chats guardados.</string>
+    <string name="clear_history">Borrar historial</string>
+    <string name="clear_history_body">Esto elimina todos los números y etiquetas guardados en este dispositivo.</string>
+    <string name="clear">Borrar</string>
+    <string name="more_options_for">Más opciones para %1$s</string>
+    <string name="history_empty_note">Los números que abras aparecerán aquí, para que puedas encontrarlos sin guardar un contacto.</string>
+    <string name="history_off_note">Los nuevos chats no se están guardando. Lo que ya está aquí se conserva hasta que lo borres.</string>
+    <string name="edit_label">Editar etiqueta</string>
+    <string name="label_hint">Fontanero, anfitrión de Airbnb, …</string>
+    <string name="save_contact">Guardar en contactos</string>
+    <string name="no_contacts_app">No hay ninguna app de contactos disponible</string>
+    <string name="remove">Quitar</string>
+    <string name="remove_number">Quitar %1$s</string>
+
+    <!-- Selection toolbar sheet -->
+    <string name="pick_a_number">Elige un número</string>
+    <string name="no_number_found">No hay ningún número de teléfono en esa selección</string>
+    <string name="no_number_explainer">Esta acción aparece con cualquier texto seleccionado: Android no permite limitarla a los números. Escribe uno abajo.</string>
+    <string name="needs_region_explainer">Parece un número local, pero aún no hay un país configurado. Elige uno y se recordará.</string>
+    <string name="unsure_hint">No parece un número real: compruébalo primero</string>
+    <string name="or_type_one">O escribe un número</string>
+
+    <!-- Shared -->
+    <string name="cancel">Cancelar</string>
+    <string name="save">Guardar</string>
+    <string name="not_affiliated">No afiliada con WhatsApp ni Meta.</string>
+</resources>

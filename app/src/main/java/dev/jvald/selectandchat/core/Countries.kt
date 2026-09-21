@@ -9,7 +9,7 @@ data class Country(
     val displayName: String,
     val flag: String,
 ) {
-    val label: String get() = "$flag  $displayName  +$callingCode"
+    val dialCode: String get() = "+$callingCode"
 }
 
 /**
@@ -18,36 +18,48 @@ data class Country(
  * libphonenumber already knows every region and its dialing code, the JDK already has
  * localized country names, and flags are just the ISO code as regional-indicator
  * codepoints — so there is no countries.json and no flag images to ship or maintain.
+ *
+ * Everything is a function of a [Locale] rather than a lazy singleton: the app's language
+ * can change while it is running, and a list built once at first use would keep showing
+ * "Germany" after the user switched to Spanish. One locale's list is cached, because in
+ * practice the screen asks for the same one many times per frame.
  */
 object Countries {
 
-    val all: List<Country> by lazy {
+    @Volatile
+    private var cache: Pair<Locale, List<Country>>? = null
+
+    fun all(locale: Locale = Locale.getDefault()): List<Country> {
+        cache?.let { (cached, list) -> if (cached == locale) return list }
         val util = PhoneNumberUtil.getInstance()
-        util.supportedRegions
+        val list = util.supportedRegions
             .map { iso ->
                 Country(
                     iso = iso,
                     callingCode = util.getCountryCodeForRegion(iso),
-                    displayName = Locale("", iso).displayCountry.ifBlank { iso },
+                    displayName = Locale("", iso).getDisplayCountry(locale).ifBlank { iso },
                     flag = flagEmoji(iso),
                 )
             }
-            .sortedBy { it.displayName.lowercase() }
+            .sortedBy { it.displayName.lowercase(locale) }
+        cache = locale to list
+        return list
     }
 
-    fun byIso(iso: String?): Country? {
+    fun byIso(iso: String?, locale: Locale = Locale.getDefault()): Country? {
         if (iso.isNullOrBlank()) return null
-        return all.firstOrNull { it.iso.equals(iso, ignoreCase = true) }
+        return all(locale).firstOrNull { it.iso.equals(iso, ignoreCase = true) }
     }
 
-    fun search(query: String): List<Country> {
-        val q = query.trim().lowercase()
-        if (q.isEmpty()) return all
-        return all.filter {
-            it.displayName.lowercase().contains(q) ||
+    /** Matches the localized name, the ISO code and the calling code, with or without "+". */
+    fun search(query: String, locale: Locale = Locale.getDefault()): List<Country> {
+        val q = query.trim().lowercase(locale)
+        if (q.isEmpty()) return all(locale)
+        val digits = q.removePrefix("+")
+        return all(locale).filter {
+            it.displayName.lowercase(locale).contains(q) ||
                 it.iso.lowercase().startsWith(q) ||
-                "+${it.callingCode}".startsWith(q) ||
-                it.callingCode.toString().startsWith(q)
+                (digits.isNotEmpty() && it.callingCode.toString().startsWith(digits))
         }
     }
 

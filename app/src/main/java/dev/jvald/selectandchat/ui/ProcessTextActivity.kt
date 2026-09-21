@@ -3,42 +3,45 @@ package dev.jvald.selectandchat.ui
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.lifecycleScope
 import dev.jvald.selectandchat.R
+import dev.jvald.selectandchat.core.AppSettings
 import dev.jvald.selectandchat.core.Extraction
-import dev.jvald.selectandchat.core.HistoryStore
 import dev.jvald.selectandchat.core.PhoneCandidate
 import dev.jvald.selectandchat.core.PhoneNumberExtractor
-import dev.jvald.selectandchat.core.Prefs
+import dev.jvald.selectandchat.core.SettingsRepository
 import dev.jvald.selectandchat.core.WhatsAppLauncher
 import dev.jvald.selectandchat.ui.theme.SelectAndChatTheme
+import kotlinx.coroutines.launch
 
 /**
  * The toolbar item, and the share-sheet target.
  *
  * In the common case this activity renders nothing at all: it resolves the number, fires
  * the intent at WhatsApp and finishes. Any UI here would be a flash on the way to the
- * chat, so the window is translucent and un-animated and [setContent] is only ever
- * reached when the selection genuinely needs a decision.
+ * chat, so the window is translucent and un-animated and `setContent` is only ever
+ * reached when the selection genuinely needs a decision. That is also why the settings
+ * are read synchronously here — see [SettingsRepository.blockingSnapshot].
  */
 class ProcessTextActivity : ComponentActivity() {
 
-    private lateinit var prefs: Prefs
-    private lateinit var history: HistoryStore
+    private lateinit var repository: SettingsRepository
+    private lateinit var settings: AppSettings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = Prefs(this)
-        history = HistoryStore(this)
-        prefs.seedRegionIfUnset(this)
+        repository = SettingsRepository(this)
+        val region = repository.blockingSeedRegionIfUnset()
+        settings = repository.blockingSnapshot().copy(region = region)
 
         val selection = intent.selectedText()
-        val extraction = PhoneNumberExtractor.extract(selection, prefs.region)
+        val extraction = PhoneNumberExtractor.extract(selection, settings.region)
 
         // Skip straight to WhatsApp only for a single *confident* match. An unconfident one
         // came from the fallback pass, which can turn an order number into a phone number —
@@ -56,11 +59,11 @@ class ProcessTextActivity : ComponentActivity() {
         getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT) ?: getCharSequenceExtra(Intent.EXTRA_TEXT)
 
     private fun openChat(candidate: PhoneCandidate) {
-        val opened = WhatsAppLauncher.openChat(this, candidate.e164, prefs.preferredFlavor)
-        if (opened) {
+        val opened = WhatsAppLauncher.openChat(this, candidate.e164, settings.flavor)
+        if (opened != null) {
             // Recorded here too, so numbers reached from the selection toolbar - the main
             // way this app is used - show up in Recents alongside typed ones.
-            history.record(candidate.e164)
+            repository.blockingRecordChat(candidate.e164)
         } else {
             Toast.makeText(this, R.string.whatsapp_not_installed, Toast.LENGTH_LONG).show()
         }
@@ -69,16 +72,16 @@ class ProcessTextActivity : ComponentActivity() {
 
     private fun showSheet(selection: CharSequence?, initial: Extraction) {
         setContent {
-            SelectAndChatTheme(theme = prefs.theme) {
-                var region by remember { mutableStateOf(prefs.region) }
+            SelectAndChatTheme(theme = settings.theme) {
+                var region by remember { mutableStateOf(settings.region) }
                 var extraction by remember { mutableStateOf(initial) }
 
                 NumberPickerSheet(
                     extraction = extraction,
                     region = region,
                     onRegionChange = { iso ->
-                        prefs.region = iso
                         region = iso
+                        lifecycleScope.launch { repository.setRegion(iso) }
                         // Re-run extraction: a local number that resolved to nothing a
                         // moment ago usually resolves now that the country is known.
                         extraction = PhoneNumberExtractor.extract(selection, iso)
