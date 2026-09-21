@@ -1,19 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  "Hand-off": the line you were reading, and the chat it became.
+
+  A line of page text sits at the bottom with its first stretch highlighted — the number
+  you selected — and the bubble's tail points back down at exactly that stretch. Read in
+  one beat it is a chat bubble; read in two it is where the chat came from.
+
+  Everything lives inside the central 66 of the 108 viewport, so a circle mask cannot
+  clip a part off. The tail grows out of the circle's edge rather than being stuck to it,
+  which is why it is drawn before the circle: same fill, invisible join.
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
+    <!-- The line of page text, and the selected stretch of it. -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M40,28 H68 A14,14 0 0 1 82,42 V56 A14,14 0 0 1 68,70 H48 L36,80 L40,70 A14,14 0 0 1 26,56 V42 A14,14 0 0 1 40,28 Z" />
+        android:fillColor="#AFCBB1"
+        android:pathData="M40,74 h30 a4,4 0 0 1 0,8 h-30 a4,4 0 0 1 0,-8 z" />
+    <path
+        android:fillColor="#2C4B36"
+        android:pathData="M40,74 h9 a4,4 0 0 1 0,8 h-9 a4,4 0 0 1 0,-8 z" />
 
+    <!-- The bubble: tail first, then the circle over its base. -->
     <path
-        android:fillColor="#059669"
-        android:pathData="M38,43 h32 a3.5,3.5 0 0 1 0,7 h-32 a3.5,3.5 0 0 1 0,-7 z" />
+        android:fillColor="#F7F5E8"
+        android:pathData="M40,60 C37,66 35,69 30,71 C38,70 46,67 52,63 Z" />
     <path
-        android:fillColor="#34D399"
-        android:pathData="M38,55 h19 a3.5,3.5 0 0 1 0,7 h-19 a3.5,3.5 0 0 1 0,-7 z" />
+        android:fillColor="#F7F5E8"
+        android:pathData="M54,24 A21,21 0 0 1 54,66 A21,21 0 0 1 54,24 Z" />
+
+    <!-- The number, inside the chat. -->
+    <path
+        android:fillColor="#3D6247"
+        android:pathData="M45,40 h18 a5,5 0 0 1 0,10 h-18 a5,5 0 0 1 0,-10 z" />
 
 </vector>

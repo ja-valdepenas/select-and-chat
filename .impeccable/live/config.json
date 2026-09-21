@@ -1,0 +1,6 @@
+{
+  "files": ["docs/logo-concepts.html"],
+  "insertBefore": "</body>",
+  "commentSyntax": "html",
+  "cspChecked": true
+}

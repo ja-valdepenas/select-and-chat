@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Select &amp; Chat — launcher icon directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F140A;
+    --surface:#1A2112;
+    --surface-2:#232C19;
+    --line:#374428;
+    --line-soft:#26311A;
+    --ink:#E7EED8;
+    --ink-2:#AEB99B;
+    --ink-3:#8B9678;
+    --lime:#B9CE9B;
+    --lime-hot:#A8D63A;
+    --warn:#F0B429;
+
+    --step--1:0.8125rem;
+    --step-0:0.9688rem;
+    --step-1:1.1875rem;
+    --step-2:1.5rem;
+    --step-3:2.125rem;
+    --step-4:3rem;
+
+    --gutter:clamp(20px,5vw,72px);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Schibsted Grotesk",ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+    font-size:var(--step-0);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    font-feature-settings:"cv05" 1,"ss01" 1;
+  }
+  body::selection,*::selection{background:var(--lime-hot);color:#14200A}
+  ::-webkit-scrollbar{width:11px;height:11px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:#334023;border-radius:99px;border:3px solid var(--bg)}
+  ::-webkit-scrollbar-thumb:hover{background:#465830}
+  :focus-visible{outline:2px solid var(--lime-hot);outline-offset:3px;border-radius:4px}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 var(--gutter)}
+
+  /* ---------- masthead ---------- */
+  .masthead{padding:clamp(56px,9vw,112px) 0 0}
+  h1{
+    margin:0 0 20px;
+    font-size:var(--step-4);
+    line-height:1.04;
+    letter-spacing:-0.033em;
+    font-weight:700;
+    max-width:17ch;
+    text-wrap:balance;
+  }
+  .lede{
+    margin:0;
+    max-width:64ch;
+    color:var(--ink-2);
+    font-size:var(--step-1);
+    line-height:1.55;
+  }
+  .lede b{color:var(--ink);font-weight:600}
+
+  /* ---------- the incumbent ---------- */
+  .incumbent{
+    margin:clamp(44px,6vw,72px) 0 0;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:clamp(20px,4vw,40px);
+    align-items:start;
+    padding:28px 24px;
+    padding-inline:clamp(20px,3vw,32px);
+    background:var(--surface);
+    border:1px solid var(--line-soft);
+    border-radius:20px;
+  }
+  .incumbent h2{
+    margin:0 0 14px;
+    font-size:var(--step-0);
+    font-weight:600;
+    letter-spacing:0.01em;
+    color:var(--ink);
+  }
+  .findings{margin:0;padding:0;list-style:none;display:grid;gap:12px;max-width:62ch}
+  .findings li{
+    position:relative;
+    padding-left:26px;
+    color:var(--ink-2);
+    font-size:var(--step--1);
+    line-height:1.6;
+  }
+  .findings li::before{
+    content:"";
+    position:absolute;
+    left:0;top:8px;
+    width:9px;height:9px;
+    border-radius:2px 2px 2px 0;
+    background:var(--warn);
+    opacity:0.85;
+  }
+  .findings b{color:var(--ink);font-weight:600}
+
+  /* ---------- concepts ---------- */
+  .concepts{margin:clamp(64px,9vw,120px) 0 0;display:grid;gap:clamp(56px,8vw,104px)}
+
+  .concept{
+    display:grid;
+    grid-template-columns:minmax(0,320px) minmax(0,1fr);
+    gap:clamp(28px,5vw,60px);
+    align-items:start;
+  }
+  .concept__stage{display:grid;gap:22px;justify-items:start}
+
+  .hero-icon{
+    width:164px;height:164px;
+    display:block;
+    border-radius:38px;
+    box-shadow:0 22px 44px -18px rgba(0,0,0,.85),0 3px 10px -3px rgba(0,0,0,.6);
+  }
+
+  .masks{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
+  .mask{display:grid;gap:8px;justify-items:center}
+  .mask svg{width:54px;height:54px;display:block}
+  .mask--circle svg{border-radius:50%}
+  .mask--squircle svg{border-radius:30%}
+  .mask--rounded svg{border-radius:22%}
+  .mask--teardrop svg{border-radius:50% 50% 50% 14%}
+  .mask__label{
+    font-size:11px;
+    letter-spacing:0.07em;
+    text-transform:uppercase;
+    color:var(--ink-3);
+    font-weight:500;
+  }
+
+  .concept__body{padding-top:4px}
+  .concept__name{
+    margin:0 0 6px;
+    font-size:var(--step-3);
+    letter-spacing:-0.028em;
+    line-height:1.1;
+    font-weight:700;
+  }
+  .concept__idea{
+    margin:0 0 22px;
+    color:var(--lime);
+    font-size:var(--step-1);
+    line-height:1.45;
+    max-width:40ch;
+    font-weight:500;
+  }
+  .concept__body p{margin:0 0 16px;color:var(--ink-2);max-width:66ch;line-height:1.65}
+  .concept__body p:last-of-type{margin-bottom:0}
+  .concept__body strong{color:var(--ink);font-weight:600}
+
+  .tradeoff{
+    margin-top:24px;
+    padding:14px 18px;
+    border:1px solid var(--line-soft);
+    border-radius:14px;
+    background:#151B0E;
+    color:var(--ink-3);
+    font-size:var(--step--1);
+    max-width:60ch;
+    line-height:1.6;
+  }
+  .tradeoff b{color:var(--ink-2);font-weight:600}
+
+  /* ---------- small-size proof ---------- */
+  .proof{
+    margin-top:28px;
+    display:flex;
+    gap:28px;
+    align-items:center;
+    flex-wrap:wrap;
+    padding:18px 22px;
+    border-radius:16px;
+    background:var(--surface);
+    border:1px solid var(--line-soft);
+  }
+  .proof__item{display:flex;gap:12px;align-items:center}
+  .proof__item svg{display:block;border-radius:24%}
+  .s48 svg{width:48px;height:48px}
+  .s32 svg{width:32px;height:32px}
+  .s24 svg{width:24px;height:24px}
+  .proof__cap{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+  .proof__mono{margin-left:auto;display:flex;gap:12px;align-items:center}
+  .mono-chip{
+    width:48px;height:48px;
+    border-radius:24%;
+    display:grid;place-items:center;
+    background:#C9D8B0;
+  }
+  .mono-chip svg{width:48px;height:48px;display:block;color:#2C3A1B}
+
+  /* ---------- home screen ---------- */
+  .homescreen{margin:clamp(72px,10vw,128px) 0 0}
+  .homescreen h2{
+    margin:0 0 6px;
+    font-size:var(--step-2);
+    letter-spacing:-0.025em;
+    font-weight:700;
+  }
+  .homescreen p{margin:0 0 30px;color:var(--ink-2);max-width:60ch}
+  .shelf{
+    display:flex;
+    gap:clamp(18px,4vw,44px);
+    flex-wrap:wrap;
+    padding:28px 24px;
+    padding-block:clamp(26px,4vw,40px);
+    padding-inline:clamp(22px,4vw,40px);
+    border-radius:24px;
+    background:
+      radial-gradient(120% 100% at 18% 0%, #2A3A4A 0%, transparent 60%),
+      radial-gradient(100% 120% at 92% 100%, #3A2E42 0%, transparent 58%),
+      linear-gradient(160deg,#151A22 0%,#0B0E12 100%);
+    border:1px solid #232A33;
+  }
+  .app{display:grid;gap:10px;justify-items:center;width:84px}
+  .app svg{width:60px;height:60px;display:block;border-radius:30%;box-shadow:0 8px 18px -8px rgba(0,0,0,.9)}
+  .app__name{
+    font-size:11.5px;
+    line-height:1.3;
+    color:#EDF1F6;
+    text-align:center;
+    text-shadow:0 1px 3px rgba(0,0,0,.9);
+    letter-spacing:.005em;
+  }
+  .app__name em{font-style:normal;color:#9BA7B5}
+
+  /* ---------- footer ---------- */
+  .outro{
+    margin:clamp(72px,10vw,128px) 0 clamp(72px,10vw,120px);
+    padding-top:32px;
+    border-top:1px solid var(--line-soft);
+    color:var(--ink-3);
+    max-width:68ch;
+    font-size:var(--step--1);
+    line-height:1.7;
+  }
+  .outro b{color:var(--ink-2);font-weight:600}
+
+  @media (max-width:860px){
+    .concept{grid-template-columns:1fr}
+    .incumbent{grid-template-columns:1fr}
+    .hero-icon{width:132px;height:132px;border-radius:30px}
+    .proof__mono{margin-left:0}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================ SPRITE ============================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gLime" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C2E858"/>
+      <stop offset="1" stop-color="#5E8C05"/>
+    </linearGradient>
+    <linearGradient id="gOlive" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2A371A"/>
+      <stop offset="1" stop-color="#0B0F06"/>
+    </linearGradient>
+    <linearGradient id="gInk" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1D2610"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <linearGradient id="gOld" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#34D399"/>
+      <stop offset="1" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ---- incumbent ---- -->
+  <symbol id="old" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#gOld)"/>
+    <path fill="#FFFFFF" d="M40,28 H68 A14,14 0 0 1 82,42 V56 A14,14 0 0 1 68,70 H48 L36,80 L40,70 A14,14 0 0 1 26,56 V42 A14,14 0 0 1 40,28 Z"/>
+    <path fill="#059669" d="M38,43 h32 a3.5,3.5 0 0 1 0,7 h-32 a3.5,3.5 0 0 1 0,-7 z"/>
+    <path fill="#34D399" d="M38,55 h19 a3.5,3.5 0 0 1 0,7 h-19 a3.5,3.5 0 0 1 0,-7 z"/>
+  </symbol>
+
+  <!-- ---- A · Highlight ---- -->
+  <symbol id="markA" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#gLime)"/>
+    <path fill="#F4FAE6" d="M50,59 L46,74 L58,59 Z"/>
+    <rect x="28" y="35" width="52" height="24" rx="11" fill="#F4FAE6"/>
+    <path fill="#F4FAE6" d="M35.5,59 H43 V66.5 A7.5,7.5 0 0 1 28,66.5 A7.5,7.5 0 0 1 35.5,59 Z"/>
+    <path fill="#F4FAE6" d="M72.5,59 H65 V66.5 A7.5,7.5 0 0 0 80,66.5 A7.5,7.5 0 0 0 72.5,59 Z"/>
+    <rect x="36" y="41" width="36" height="12" rx="6" fill="#1A240D"/>
+  </symbol>
+  <symbol id="markA-mono" viewBox="0 0 108 108">
+    <path fill="currentColor" d="M50,59 L46,74 L58,59 Z"/>
+    <path fill="currentColor" fill-rule="evenodd" d="M39,35 h30 a11,11 0 0 1 11,11 v2 a11,11 0 0 1 -11,11 h-30 a11,11 0 0 1 -11,-11 v-2 a11,11 0 0 1 11,-11 z M39,40.5 a5.5,5.5 0 0 0 -5.5,5.5 v2 a5.5,5.5 0 0 0 5.5,5.5 h30 a5.5,5.5 0 0 0 5.5,-5.5 v-2 a5.5,5.5 0 0 0 -5.5,-5.5 z"/>
+    <rect x="38" y="42" width="32" height="10" rx="5" fill="currentColor"/>
+    <path fill="currentColor" d="M35.5,59 H43 V66.5 A7.5,7.5 0 0 1 28,66.5 A7.5,7.5 0 0 1 35.5,59 Z"/>
+    <path fill="currentColor" d="M72.5,59 H65 V66.5 A7.5,7.5 0 0 0 80,66.5 A7.5,7.5 0 0 0 72.5,59 Z"/>
+  </symbol>
+
+  <!-- ---- B · Hand-off ---- -->
+  <symbol id="markB" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#gOlive)"/>
+    <rect x="33" y="72" width="42" height="9" rx="4.5" fill="#556B34"/>
+    <rect x="33" y="72" width="19" height="9" rx="4.5" fill="#A8D63A"/>
+    <path fill="#E8F4CE" d="M40,56 L36,67 L52,56 Z"/>
+    <rect x="30" y="26" width="48" height="30" rx="11" fill="#E8F4CE"/>
+    <rect x="39" y="36" width="30" height="10" rx="5" fill="#1A240D"/>
+  </symbol>
+  <symbol id="markB-mono" viewBox="0 0 108 108">
+    <rect x="33" y="72" width="42" height="9" rx="4.5" fill="currentColor" opacity="0.45"/>
+    <rect x="33" y="72" width="19" height="9" rx="4.5" fill="currentColor"/>
+    <path fill="currentColor" d="M40,56 L36,67 L52,56 Z"/>
+    <path fill="currentColor" fill-rule="evenodd" d="M41,26 h26 a11,11 0 0 1 11,11 v8 a11,11 0 0 1 -11,11 h-26 a11,11 0 0 1 -11,-11 v-8 a11,11 0 0 1 11,-11 z M41,31.5 a5.5,5.5 0 0 0 -5.5,5.5 v8 a5.5,5.5 0 0 0 5.5,5.5 h26 a5.5,5.5 0 0 0 5.5,-5.5 v-8 a5.5,5.5 0 0 0 -5.5,-5.5 z"/>
+    <rect x="39" y="36" width="30" height="10" rx="5" fill="currentColor"/>
+  </symbol>
+
+  <!-- ---- C · Pair ---- -->
+  <symbol id="markC" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#gInk)"/>
+    <path fill="#A8D63A" d="M56,32 H32 V56 A24,24 0 0 0 80,56 A24,24 0 0 0 56,32 Z"/>
+    <rect x="40" y="49" width="34" height="11" rx="5.5" fill="#101808"/>
+  </symbol>
+  <symbol id="markC-mono" viewBox="0 0 108 108">
+    <path fill="currentColor" fill-rule="evenodd" d="M56,32 H32 V56 A24,24 0 0 0 80,56 A24,24 0 0 0 56,32 Z M40,49 h34 a5.5,5.5 0 0 1 0,11 h-34 a5.5,5.5 0 0 1 0,-11 z"/>
+  </symbol>
+</svg>
+
+<!-- ============================ PAGE ============================ -->
+<main class="wrap">
+
+  <header class="masthead">
+    <h1>Three directions for the Select&nbsp;&amp;&nbsp;Chat icon</h1>
+    <p class="lede">All three drop the emerald palette for the app's own yellow-green, the <b>#68A500</b> seed the whole interface is built from, and all three try to say <b>selection</b>, not just <b>messaging</b>. Pick one, or take parts from two.</p>
+  </header>
+
+  <section class="incumbent">
+    <svg class="hero-icon" style="width:112px;height:112px;border-radius:26px" viewBox="0 0 108 108" role="img" aria-label="Current launcher icon: white speech bubble with two bars on an emerald gradient"><use href="#old"/></svg>
+    <div>
+      <h2>What the current icon is doing</h2>
+      <ul class="findings">
+        <li><b>It is emerald; the app is yellow-green.</b> The launcher art runs #34D399&nbsp;→&nbsp;#047857, while every screen inside runs the #68A500 tonal palette. Icon and app do not look like the same product.</li>
+        <li><b>A green tile with a white bubble is the WhatsApp silhouette.</b> At 48dp the resemblance is the whole read, and the icon is one of the three surfaces Meta's guidelines actually restrict. It is the reason the app is not called "Select &amp; WhatsApp-it".</li>
+        <li><b>Nothing in it is about selecting.</b> A bubble with two bars is the generic messaging mark. The one thing this app does that no other does, turning a highlighted number into a chat, is absent.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="concepts">
+
+    <!-- ===== A ===== -->
+    <article class="concept" id="concept-a">
+      <div class="concept__stage">
+        <svg class="hero-icon" viewBox="0 0 108 108" role="img" aria-label="Concept A: a pale highlight pill holding a dark bar, clamped by two selection handles, on a lime field"><use href="#markA"/></svg>
+        <div class="masks">
+          <div class="mask mask--circle"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA"/></svg><span class="mask__label">Circle</span></div>
+          <div class="mask mask--squircle"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA"/></svg><span class="mask__label">Squircle</span></div>
+          <div class="mask mask--rounded"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA"/></svg><span class="mask__label">Rounded</span></div>
+          <div class="mask mask--teardrop"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA"/></svg><span class="mask__label">Teardrop</span></div>
+        </div>
+      </div>
+      <div class="concept__body">
+        <h2 class="concept__name">Highlight</h2>
+        <p class="concept__idea">The gesture itself: a number, selected.</p>
+        <p>Android's two selection handles clamp a highlighted run of text. That is the exact moment the app lives in: the half-second after a long-press, before the toolbar appears. No other icon on the phone is built from it. The handles are drawn to the platform's real geometry: a circle with one squared corner, hung off the ends of the selection.</p>
+        <p>The pale pill is the highlight, the dark bar inside it is the number, and the small tail between the handles settles what it becomes. Read quickly it is <strong>a chip of selected text</strong>; read slowly it is <strong>a message</strong>. Lime field, olive ink: maximum contrast at small size, and about as far from emerald as green gets.</p>
+        <div class="proof">
+          <div class="proof__item s48"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA"/></svg><span class="proof__cap">48dp</span></div>
+          <div class="proof__item s32"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA"/></svg><span class="proof__cap">32dp</span></div>
+          <div class="proof__item s24"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA"/></svg><span class="proof__cap">24dp</span></div>
+          <div class="proof__mono"><span class="proof__cap">Themed</span><span class="mono-chip"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA-mono"/></svg></span></div>
+        </div>
+        <p class="tradeoff"><b>Trade-off:</b> the most ownable of the three, and the least self-explanatory. Someone who has never used the app sees a chip, not a chat. It leans on the name underneath it to finish the sentence.</p>
+      </div>
+    </article>
+
+    <!-- ===== B ===== -->
+    <article class="concept" id="concept-b">
+      <div class="concept__stage">
+        <svg class="hero-icon" viewBox="0 0 108 108" role="img" aria-label="Concept B: a pale chat bubble above a line of text whose first part is highlighted, its tail pointing down at the highlight"><use href="#markB"/></svg>
+        <div class="masks">
+          <div class="mask mask--circle"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB"/></svg><span class="mask__label">Circle</span></div>
+          <div class="mask mask--squircle"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB"/></svg><span class="mask__label">Squircle</span></div>
+          <div class="mask mask--rounded"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB"/></svg><span class="mask__label">Rounded</span></div>
+          <div class="mask mask--teardrop"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB"/></svg><span class="mask__label">Teardrop</span></div>
+        </div>
+      </div>
+      <div class="concept__body">
+        <h2 class="concept__name">Hand-off</h2>
+        <p class="concept__idea">The line you were reading. The chat it became.</p>
+        <p>A line of ordinary text sits at the bottom, its first stretch lit up in hot lime. That is the number you selected, and the bubble above it points its tail straight back down at that highlight. One picture, two beats: <strong>this bit of a page</strong> → <strong>that chat</strong>.</p>
+        <p>It is the only one of the three that explains the product to someone who has never seen it, which matters in a store listing next to four competitors. The dark olive field is the app's own default theme, so the icon and the first screen share a background.</p>
+        <div class="proof">
+          <div class="proof__item s48"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB"/></svg><span class="proof__cap">48dp</span></div>
+          <div class="proof__item s32"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB"/></svg><span class="proof__cap">32dp</span></div>
+          <div class="proof__item s24"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB"/></svg><span class="proof__cap">24dp</span></div>
+          <div class="proof__mono"><span class="proof__cap">Themed</span><span class="mono-chip"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB-mono"/></svg></span></div>
+        </div>
+        <p class="tradeoff"><b>Trade-off:</b> three elements instead of two, and the text line is the first thing to go at 24dp in the status bar. It is also the closest of the three to a conventional messaging icon, since the bubble is still a bubble.</p>
+      </div>
+    </article>
+
+    <!-- ===== C ===== -->
+    <article class="concept" id="concept-c">
+      <div class="concept__stage">
+        <svg class="hero-icon" viewBox="0 0 108 108" role="img" aria-label="Concept C: one large lime teardrop with a squared upper-left corner, holding a single dark bar, on a near-black field"><use href="#markC"/></svg>
+        <div class="masks">
+          <div class="mask mask--circle"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC"/></svg><span class="mask__label">Circle</span></div>
+          <div class="mask mask--squircle"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC"/></svg><span class="mask__label">Squircle</span></div>
+          <div class="mask mask--rounded"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC"/></svg><span class="mask__label">Rounded</span></div>
+          <div class="mask mask--teardrop"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC"/></svg><span class="mask__label">Teardrop</span></div>
+        </div>
+      </div>
+      <div class="concept__body">
+        <h2 class="concept__name">Drop</h2>
+        <p class="concept__idea">One shape, doing both jobs at once.</p>
+        <p>A selection handle and a speech-bubble tail are the same object drawn twice: a circle with one corner pulled square. Draw it once, big, and the mark is <strong>a handle</strong> and <strong>a bubble</strong> at the same time. The corner points up and to the left, back at the text it came from, which is the whole relationship in one angle.</p>
+        <p>One shape and one bar, so nothing falls off: it survives every mask, holds at a 24dp notification size, and reduces to a single silhouette for the themed icon without losing a part. On the near-black field it matches the AMOLED theme the store screenshots are shot in.</p>
+        <div class="proof">
+          <div class="proof__item s48"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC"/></svg><span class="proof__cap">48dp</span></div>
+          <div class="proof__item s32"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC"/></svg><span class="proof__cap">32dp</span></div>
+          <div class="proof__item s24"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC"/></svg><span class="proof__cap">24dp</span></div>
+          <div class="proof__mono"><span class="proof__cap">Themed</span><span class="mono-chip"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC-mono"/></svg></span></div>
+        </div>
+        <p class="tradeoff"><b>Trade-off:</b> the double reading is a designer's pleasure, not a user's — most people will just see a bubble with the tail in an unusual place. Strongest as a long-term mark, least explicit about what the app is for.</p>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="homescreen">
+    <h2>On a home screen, at the size that decides it</h2>
+    <p>Same size, same mask, same wallpaper. This is the only comparison that counts.</p>
+    <div class="shelf">
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#old"/></svg><span class="app__name"><em>Now</em><br>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markA"/></svg><span class="app__name"><em>A</em><br>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markB"/></svg><span class="app__name"><em>B</em><br>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#markC"/></svg><span class="app__name"><em>C</em><br>Select &amp; Chat</span></div>
+    </div>
+  </section>
+
+  <p class="outro">Every mark sits inside the central 66dp of the 108dp viewport, so nothing critical is lost to a circle mask, and each ships with a single-alpha monochrome layer for Android's themed icons, where the current icon reduces to a plain bubble. <b>Say which direction, or which parts of which</b>, and it becomes <code>ic_launcher_background</code>, <code>ic_launcher_foreground</code> and <code>ic_launcher_monochrome</code>, with <code>tools/make_icon.py</code> re-pointed to render the 512&nbsp;px store icon and the feature graphic from the same geometry.</p>
+
+</main>
+
+</body>
+</html>

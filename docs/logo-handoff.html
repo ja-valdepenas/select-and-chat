@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hand-off, in pastel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F140A;
+    --surface:#1A2112;
+    --line-soft:#26311A;
+    --ink:#E7EED8;
+    --ink-2:#AEB99B;
+    --ink-3:#8B9678;
+    --lime:#B9CE9B;
+    --lime-hot:#A8D63A;
+    --warn:#F0B429;
+
+    --step--1:0.8125rem;
+    --step-0:0.9688rem;
+    --step-1:1.1875rem;
+    --step-2:1.5rem;
+    --step-3:2rem;
+    --step-4:2.875rem;
+
+    --gutter:clamp(20px,5vw,72px);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Schibsted Grotesk",ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+    font-size:var(--step-0);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::selection,*::selection{background:var(--lime-hot);color:#14200A}
+  ::-webkit-scrollbar{width:11px;height:11px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:#334023;border-radius:99px;border:3px solid var(--bg)}
+  ::-webkit-scrollbar-thumb:hover{background:#465830}
+  :focus-visible{outline:2px solid var(--lime-hot);outline-offset:3px;border-radius:4px}
+
+  .wrap{max-width:1100px;margin:0 auto;padding:0 var(--gutter)}
+
+  .masthead{padding:clamp(56px,9vw,104px) 0 0}
+  h1{
+    margin:0 0 18px;
+    font-size:var(--step-4);
+    line-height:1.05;
+    letter-spacing:-0.03em;
+    font-weight:800;
+    max-width:18ch;
+    text-wrap:balance;
+  }
+  .lede{margin:0;max-width:64ch;color:var(--ink-2);font-size:var(--step-1);line-height:1.55}
+  .lede b{color:var(--ink);font-weight:600}
+
+  /* ---------- shape change ---------- */
+  .shape{
+    margin:clamp(44px,6vw,72px) 0 0;
+    display:flex;
+    gap:clamp(24px,4vw,44px);
+    align-items:center;
+    flex-wrap:wrap;
+    padding:26px 28px;
+    padding-inline:clamp(20px,3vw,28px);
+    background:var(--surface);
+    border:1px solid var(--line-soft);
+    border-radius:20px;
+  }
+  .shape__pair{display:flex;gap:14px;align-items:center}
+  .shape__pair svg{width:80px;height:80px;display:block;border-radius:20px}
+  .shape__arrow{color:var(--ink-3);font-size:20px;line-height:1}
+  .shape__text{flex:1 1 300px;min-width:0}
+  .shape__text h2{margin:0 0 8px;font-size:var(--step-0);font-weight:600}
+  .shape__text p{margin:0;color:var(--ink-2);font-size:var(--step--1);line-height:1.65;max-width:58ch}
+
+  /* ---------- the brand note ---------- */
+  .note{
+    margin:24px 0 0;
+    padding:24px 28px;
+    padding-inline:clamp(20px,3vw,28px);
+    border:1px solid var(--line-soft);
+    border-radius:20px;
+    background:#151B0E;
+  }
+  .note h2{margin:0 0 14px;font-size:var(--step-0);font-weight:600;color:var(--ink)}
+  .note ul{margin:0;padding:0;list-style:none;display:grid;gap:11px;max-width:64ch}
+  .note li{position:relative;padding-left:26px;color:var(--ink-2);font-size:var(--step--1);line-height:1.6}
+  .note li::before{
+    content:"";position:absolute;left:0;top:8px;
+    width:9px;height:9px;border-radius:2px 2px 2px 0;
+    background:var(--warn);opacity:.85;
+  }
+  .note b{color:var(--ink);font-weight:600}
+
+  /* ---------- palettes ---------- */
+  .palettes{
+    margin:clamp(60px,8vw,104px) 0 0;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:clamp(32px,4vw,48px);
+  }
+  .pal{display:grid;gap:16px;align-content:start}
+  .pal__hero{width:100%;max-width:200px;aspect-ratio:1;display:block;border-radius:24%;
+    box-shadow:0 18px 36px -16px rgba(0,0,0,.85),0 2px 8px -2px rgba(0,0,0,.6)}
+  .pal__name{margin:0;font-size:var(--step-2);letter-spacing:-0.02em;font-weight:700;line-height:1.15}
+  .pal__note{margin:0;color:var(--ink-2);font-size:var(--step--1);line-height:1.6;max-width:36ch}
+  .pal__note b{color:var(--ink);font-weight:600}
+  .pal__swatches{display:flex;gap:6px}
+  .pal__swatches i{width:22px;height:22px;border-radius:7px;display:block}
+  .pal__sizes{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .pal__sizes svg{display:block;border-radius:24%}
+  .pal__sizes .a{width:48px;height:48px}
+  .pal__sizes .b{width:32px;height:32px}
+  .pal__sizes .c{width:24px;height:24px}
+  .pal__sizes .m{width:32px;height:32px;border-radius:24%;background:#C9D8B0;color:#2C3A1B}
+  .cap{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+  .pal__masks{display:flex;gap:10px}
+  .pal__masks svg{width:42px;height:42px;display:block}
+  .pal__masks .circle{border-radius:50%}
+  .pal__masks .squircle{border-radius:30%}
+  .pal__masks .rounded{border-radius:22%}
+
+  /* ---------- home screens ---------- */
+  .screens{margin:clamp(64px,9vw,112px) 0 0}
+  .screens h2{margin:0 0 6px;font-size:var(--step-3);letter-spacing:-0.025em;font-weight:700}
+  .screens > p{margin:0 0 28px;color:var(--ink-2);max-width:58ch}
+  .shelf{
+    display:flex;gap:clamp(16px,3vw,36px);flex-wrap:wrap;
+    padding:32px 28px;
+    padding-block:clamp(26px,4vw,38px);
+    padding-inline:clamp(22px,4vw,38px);
+    border-radius:22px;
+    margin-bottom:18px;
+  }
+  .shelf--dark{
+    background:linear-gradient(158deg,#1B2430 0%,#0C1016 55%,#161020 100%);
+    border:1px solid #232A33;
+  }
+  .shelf--light{
+    background:linear-gradient(158deg,#EFE7DA 0%,#DCE3E8 55%,#E7DEE9 100%);
+    border:1px solid #CFD3D8;
+  }
+  .app{display:grid;gap:9px;justify-items:center;width:78px}
+  .app svg{width:56px;height:56px;display:block;border-radius:30%;box-shadow:0 8px 16px -8px rgba(0,0,0,.55)}
+  .app span{font-size:12px;line-height:1.3;text-align:center;letter-spacing:.005em}
+  .shelf--dark .app span{color:#EDF1F6;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+  .shelf--light .app span{color:#26292E;text-shadow:0 1px 2px rgba(255,255,255,.7)}
+  .app em{font-style:normal;display:block;opacity:.7}
+
+  .outro{
+    margin:clamp(64px,9vw,112px) 0 clamp(72px,10vw,120px);
+    padding-top:30px;
+    border-top:1px solid var(--line-soft);
+    color:var(--ink-3);max-width:68ch;font-size:var(--step--1);line-height:1.7;
+  }
+  .outro b{color:var(--ink-2);font-weight:600}
+  code{font-family:ui-monospace,"Cascadia Mono",Menlo,monospace;font-size:.92em;color:var(--lime)}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="fPistachio" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#E4F0C8"/><stop offset="1" stop-color="#B5D383"/></linearGradient>
+  <linearGradient id="fMint" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#C5EDD8"/><stop offset="1" stop-color="#82D2A6"/></linearGradient>
+  <linearGradient id="fPaper" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#FBFBF4"/><stop offset="1" stop-color="#E6EBE1"/></linearGradient>
+  <linearGradient id="fMoss" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#8DB48F"/><stop offset="1" stop-color="#57815F"/></linearGradient>
+  <linearGradient id="fOld" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#047857"/></linearGradient>
+  <linearGradient id="fOlive" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#2A371A"/><stop offset="1" stop-color="#0B0F06"/></linearGradient>
+
+</defs>
+
+  <!-- the shape it replaces -->
+  <symbol id="oldShape" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#fOlive)"/>
+    <rect x="33" y="72" width="42" height="9" rx="4.5" fill="#556B34"/>
+    <rect x="33" y="72" width="19" height="9" rx="4.5" fill="#A8D63A"/>
+    <path fill="#E8F4CE" d="M40,56 L36,67 L52,56 Z"/>
+    <rect x="30" y="26" width="48" height="30" rx="11" fill="#E8F4CE"/>
+    <rect x="39" y="36" width="30" height="10" rx="5" fill="#1A240D"/>
+  </symbol>
+
+  <symbol id="old" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#fOld)"/>
+    <path fill="#FFFFFF" d="M40,28 H68 A14,14 0 0 1 82,42 V56 A14,14 0 0 1 68,70 H48 L36,80 L40,70 A14,14 0 0 1 26,56 V42 A14,14 0 0 1 40,28 Z"/>
+    <path fill="#059669" d="M38,43 h32 a3.5,3.5 0 0 1 0,7 h-32 a3.5,3.5 0 0 1 0,-7 z"/>
+    <path fill="#34D399" d="M38,55 h19 a3.5,3.5 0 0 1 0,7 h-19 a3.5,3.5 0 0 1 0,-7 z"/>
+  </symbol>
+
+  <symbol id="pistachio" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#fPistachio)"/>
+    <rect x="36" y="74" width="38" height="8" rx="4" fill="#93B75E"/>
+    <rect x="36" y="74" width="17" height="8" rx="4" fill="#36501A"/>
+    <path fill="#FFFFFF" d="M40,60 C37,66 35,69 30,71 C38,70 46,67 52,63 Z"/>
+    <circle cx="54" cy="45" r="21" fill="#FFFFFF"/>
+    <rect x="40" y="40" width="28" height="10" rx="5" fill="#4B6C22"/>
+  </symbol>
+  <symbol id="mint" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#fMint)"/>
+    <rect x="36" y="74" width="38" height="8" rx="4" fill="#56B187"/>
+    <rect x="36" y="74" width="17" height="8" rx="4" fill="#14523A"/>
+    <path fill="#FFFFFF" d="M40,60 C37,66 35,69 30,71 C38,70 46,67 52,63 Z"/>
+    <circle cx="54" cy="45" r="21" fill="#FFFFFF"/>
+    <rect x="40" y="40" width="28" height="10" rx="5" fill="#1F6B48"/>
+  </symbol>
+  <symbol id="paper" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#fPaper)"/>
+    <rect x="36" y="74" width="38" height="8" rx="4" fill="#CDD5C6"/>
+    <rect x="36" y="74" width="17" height="8" rx="4" fill="#2FA96E"/>
+    <path fill="#55CE92" d="M40,60 C37,66 35,69 30,71 C38,70 46,67 52,63 Z"/>
+    <circle cx="54" cy="45" r="21" fill="#55CE92"/>
+    <rect x="40" y="40" width="28" height="10" rx="5" fill="#FFFFFF"/>
+  </symbol>
+  <symbol id="moss" viewBox="0 0 108 108">
+    <rect width="108" height="108" fill="url(#fMoss)"/>
+    <rect x="36" y="74" width="38" height="8" rx="4" fill="#AFCBB1"/>
+    <rect x="36" y="74" width="17" height="8" rx="4" fill="#2C4B36"/>
+    <path fill="#F7F5E8" d="M40,60 C37,66 35,69 30,71 C38,70 46,67 52,63 Z"/>
+    <circle cx="54" cy="45" r="21" fill="#F7F5E8"/>
+    <rect x="40" y="40" width="28" height="10" rx="5" fill="#3D6247"/>
+  </symbol>
+  <symbol id="handoff-mono" viewBox="0 0 108 108">
+    <rect x="36" y="74" width="38" height="8" rx="4" fill="currentColor" opacity=".45"/>
+    <rect x="36" y="74" width="17" height="8" rx="4" fill="currentColor"/>
+    <path fill="currentColor" d="M40,60 C37,66 35,69 30,71 C38,70 46,67 52,63 Z"/>
+    <path fill="currentColor" fill-rule="evenodd" d="M54,24 A21,21 0 1 1 53.98,24 Z M40,40 h28 a5,5 0 0 1 0,10 h-28 a5,5 0 0 1 0,-10 z"/>
+  </symbol>
+</svg>
+
+<main class="wrap">
+
+  <header class="masthead">
+    <h1>Hand-off, in pastel</h1>
+    <p class="lede">Same idea: <b>the line you were reading, and the chat it became.</b> The bubble is round now, the tail is a soft nub instead of a spike, and the whole thing has dropped into a pastel register. Four palettes to choose the green by eye.</p>
+  </header>
+
+  <section class="shape">
+    <div class="shape__pair">
+      <svg viewBox="0 0 108 108" role="img" aria-label="Previous version: a wide rounded-rectangle bubble with a sharp triangular tail"><use href="#oldShape"/></svg>
+      <span class="shape__arrow" aria-hidden="true">→</span>
+      <svg viewBox="0 0 108 108" role="img" aria-label="New version: a circular bubble with a soft curved tail"><use href="#pistachio"/></svg>
+    </div>
+    <div class="shape__text">
+      <h2>What changed in the drawing</h2>
+      <p>The bubble was a 48&times;30 rounded rectangle with a straight-sided triangle stuck to it, which is what made it read as bubbly and off. It is now a true circle with a curved tail that grows out of the edge rather than sitting against it. The tail still aims at the highlighted stretch of text, so the sentence the icon tells is unchanged.</p>
+    </div>
+  </section>
+
+  <section class="note">
+    <h2>On borrowing their green</h2>
+    <ul>
+      <li><b>Colour is the low-risk half.</b> Green runs across the whole messaging category and no one owns it. What the guidelines actually restrict is a mark confusable with theirs.</li>
+      <li><b>The silhouette is the exposed half.</b> A saturated green tile holding a white round bubble with a tail is their icon's structure, and a circular bubble moves toward it. Two things hold this apart: the line of text underneath, which their icon has nothing of, and pastel, because their green is vivid <code>#25D366</code> and a soft one reads as a different brand on sight.</li>
+      <li><b>Paper is the safe way to have it.</b> It uses their green on the bubble and puts it on a near-white field, inverting the value structure. <b>Mint</b> is the closest to their arrangement: usable, and the one a reviewer would look at twice.</li>
+    </ul>
+  </section>
+
+  <section class="palettes">
+
+    <article class="pal">
+      <svg class="pal__hero" viewBox="0 0 108 108" role="img" aria-label="Pistachio palette: pale yellow-green field, white bubble"><use href="#pistachio"/></svg>
+      <div class="pal__swatches" aria-hidden="true">
+        <i style="background:#E4F0C8"></i><i style="background:#B5D383"></i><i style="background:#FFFFFF"></i><i style="background:#4B6C22"></i><i style="background:#36501A"></i>
+      </div>
+      <h2 class="pal__name">Pistachio</h2>
+      <p class="pal__note">The app's own hue, lightened. Nothing borrowed, and the one that matches the <b>#68A500</b> seed the interface already runs on.</p>
+      <div class="pal__masks">
+        <svg class="circle" viewBox="0 0 108 108" aria-hidden="true"><use href="#pistachio"/></svg>
+        <svg class="squircle" viewBox="0 0 108 108" aria-hidden="true"><use href="#pistachio"/></svg>
+        <svg class="rounded" viewBox="0 0 108 108" aria-hidden="true"><use href="#pistachio"/></svg>
+      </div>
+      <div class="pal__sizes">
+        <svg class="a" viewBox="0 0 108 108" aria-hidden="true"><use href="#pistachio"/></svg>
+        <svg class="b" viewBox="0 0 108 108" aria-hidden="true"><use href="#pistachio"/></svg>
+        <svg class="c" viewBox="0 0 108 108" aria-hidden="true"><use href="#pistachio"/></svg>
+        <svg class="m" viewBox="0 0 108 108" aria-hidden="true"><use href="#handoff-mono"/></svg>
+        <span class="cap">48 / 32 / 24 / themed</span>
+      </div>
+    </article>
+
+    <article class="pal">
+      <svg class="pal__hero" viewBox="0 0 108 108" role="img" aria-label="Mint palette: pastel green field, white bubble"><use href="#mint"/></svg>
+      <div class="pal__swatches" aria-hidden="true">
+        <i style="background:#C5EDD8"></i><i style="background:#82D2A6"></i><i style="background:#FFFFFF"></i><i style="background:#1F6B48"></i><i style="background:#14523A"></i>
+      </div>
+      <h2 class="pal__name">Mint</h2>
+      <p class="pal__note">Their hue, desaturated and lifted. Reads as the same family from across a home screen without matching a single one of their values.</p>
+      <div class="pal__masks">
+        <svg class="circle" viewBox="0 0 108 108" aria-hidden="true"><use href="#mint"/></svg>
+        <svg class="squircle" viewBox="0 0 108 108" aria-hidden="true"><use href="#mint"/></svg>
+        <svg class="rounded" viewBox="0 0 108 108" aria-hidden="true"><use href="#mint"/></svg>
+      </div>
+      <div class="pal__sizes">
+        <svg class="a" viewBox="0 0 108 108" aria-hidden="true"><use href="#mint"/></svg>
+        <svg class="b" viewBox="0 0 108 108" aria-hidden="true"><use href="#mint"/></svg>
+        <svg class="c" viewBox="0 0 108 108" aria-hidden="true"><use href="#mint"/></svg>
+        <svg class="m" viewBox="0 0 108 108" aria-hidden="true"><use href="#handoff-mono"/></svg>
+        <span class="cap">48 / 32 / 24 / themed</span>
+      </div>
+    </article>
+
+    <article class="pal">
+      <svg class="pal__hero" viewBox="0 0 108 108" role="img" aria-label="Paper palette: near-white field, soft green bubble"><use href="#paper"/></svg>
+      <div class="pal__swatches" aria-hidden="true">
+        <i style="background:#FBFBF4"></i><i style="background:#E6EBE1"></i><i style="background:#55CE92"></i><i style="background:#2FA96E"></i><i style="background:#CDD5C6"></i>
+      </div>
+      <h2 class="pal__name">Paper</h2>
+      <p class="pal__note">Their green, on the bubble instead of the tile. Same colour, opposite structure, and the crispest of the four at 24&nbsp;dp.</p>
+      <div class="pal__masks">
+        <svg class="circle" viewBox="0 0 108 108" aria-hidden="true"><use href="#paper"/></svg>
+        <svg class="squircle" viewBox="0 0 108 108" aria-hidden="true"><use href="#paper"/></svg>
+        <svg class="rounded" viewBox="0 0 108 108" aria-hidden="true"><use href="#paper"/></svg>
+      </div>
+      <div class="pal__sizes">
+        <svg class="a" viewBox="0 0 108 108" aria-hidden="true"><use href="#paper"/></svg>
+        <svg class="b" viewBox="0 0 108 108" aria-hidden="true"><use href="#paper"/></svg>
+        <svg class="c" viewBox="0 0 108 108" aria-hidden="true"><use href="#paper"/></svg>
+        <svg class="m" viewBox="0 0 108 108" aria-hidden="true"><use href="#handoff-mono"/></svg>
+        <span class="cap">48 / 32 / 24 / themed</span>
+      </div>
+    </article>
+
+    <article class="pal">
+      <svg class="pal__hero" viewBox="0 0 108 108" role="img" aria-label="Moss palette: muted mid-green field, cream bubble"><use href="#moss"/></svg>
+      <div class="pal__swatches" aria-hidden="true">
+        <i style="background:#8DB48F"></i><i style="background:#57815F"></i><i style="background:#F7F5E8"></i><i style="background:#3D6247"></i><i style="background:#AFCBB1"></i>
+      </div>
+      <h2 class="pal__name">Moss</h2>
+      <p class="pal__note">Pastel with the lights turned down. The only one of the four that still holds its shape on a pale wallpaper.</p>
+      <div class="pal__masks">
+        <svg class="circle" viewBox="0 0 108 108" aria-hidden="true"><use href="#moss"/></svg>
+        <svg class="squircle" viewBox="0 0 108 108" aria-hidden="true"><use href="#moss"/></svg>
+        <svg class="rounded" viewBox="0 0 108 108" aria-hidden="true"><use href="#moss"/></svg>
+      </div>
+      <div class="pal__sizes">
+        <svg class="a" viewBox="0 0 108 108" aria-hidden="true"><use href="#moss"/></svg>
+        <svg class="b" viewBox="0 0 108 108" aria-hidden="true"><use href="#moss"/></svg>
+        <svg class="c" viewBox="0 0 108 108" aria-hidden="true"><use href="#moss"/></svg>
+        <svg class="m" viewBox="0 0 108 108" aria-hidden="true"><use href="#handoff-mono"/></svg>
+        <span class="cap">48 / 32 / 24 / themed</span>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="screens">
+    <h2>On both kinds of wallpaper</h2>
+    <p>Pastel is the one register that can disappear. A light icon on a light wallpaper is the test the other comparisons hide.</p>
+
+    <div class="shelf shelf--dark">
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#old"/></svg><span><em>Now</em>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#pistachio"/></svg><span><em>Pistachio</em>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#mint"/></svg><span><em>Mint</em>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#paper"/></svg><span><em>Paper</em>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#moss"/></svg><span><em>Moss</em>Select &amp; Chat</span></div>
+    </div>
+
+    <div class="shelf shelf--light">
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#old"/></svg><span><em>Now</em>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#pistachio"/></svg><span><em>Pistachio</em>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#mint"/></svg><span><em>Mint</em>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#paper"/></svg><span><em>Paper</em>Select &amp; Chat</span></div>
+      <div class="app"><svg viewBox="0 0 108 108" aria-hidden="true"><use href="#moss"/></svg><span><em>Moss</em>Select &amp; Chat</span></div>
+    </div>
+  </section>
+
+  <p class="outro">The drawing is identical across all four; only the five fills change, so switching palette later costs nothing. Everything sits inside the central 66&nbsp;dp of the 108&nbsp;dp viewport and reduces to one silhouette for the themed icon. <b>Name a palette</b> and it becomes <code>ic_launcher_background</code>, <code>ic_launcher_foreground</code> and <code>ic_launcher_monochrome</code>, with <code>tools/make_icon.py</code> re-pointed at the new geometry for the 512&nbsp;px store icon and the feature graphic.</p>
+
+</main>
+</body>
+</html>

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#10B981</color>
+    <!-- Orphaned: the adaptive background is a gradient drawable of the same name,
+         not this colour. Kept in step with it so a stale value cannot mislead. -->
+    <color name="ic_launcher_background">#6F9B75</color>
 </resources>

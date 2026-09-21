@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Non-adaptive fallback. Dead on this app's minSdk of 33 (drawable-v26 always wins), kept
+  in step so the two never disagree if the floor ever drops.
+
+  The mark is scaled 1.5x about the centre because there is no launcher mask here: the
+  adaptive version shows only the central 72 of the 108 viewport, so drawing the same
+  coordinates flat would render a noticeably smaller icon than the home screen shows.
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
@@ -6,25 +14,38 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <path android:pathData="M20,4 h68 a20,20 0 0 1 20,20 v60 a20,20 0 0 1 -20,20 h-68 a20,20 0 0 1 -20,-20 v-60 a20,20 0 0 1 20,-20 z">
+    <path android:pathData="M24,0 h60 a24,24 0 0 1 24,24 v60 a24,24 0 0 1 -24,24 h-60 a24,24 0 0 1 -24,-24 v-60 a24,24 0 0 1 24,-24 z">
         <aapt:attr name="android:fillColor">
             <gradient
                 android:type="linear"
                 android:startX="0" android:startY="0"
                 android:endX="108" android:endY="108">
-                <item android:offset="0" android:color="#34D399" />
-                <item android:offset="1" android:color="#047857" />
+                <item android:offset="0" android:color="#8DB48F" />
+                <item android:offset="1" android:color="#57815F" />
             </gradient>
         </aapt:attr>
     </path>
 
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M40,28 H68 A14,14 0 0 1 82,42 V56 A14,14 0 0 1 68,70 H48 L36,80 L40,70 A14,14 0 0 1 26,56 V42 A14,14 0 0 1 40,28 Z" />
-    <path
-        android:fillColor="#059669"
-        android:pathData="M38,43 h32 a3.5,3.5 0 0 1 0,7 h-32 a3.5,3.5 0 0 1 0,-7 z" />
-    <path
-        android:fillColor="#34D399"
-        android:pathData="M38,55 h19 a3.5,3.5 0 0 1 0,7 h-19 a3.5,3.5 0 0 1 0,-7 z" />
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="1.5"
+        android:scaleY="1.5">
+        <path
+            android:fillColor="#AFCBB1"
+            android:pathData="M40,74 h30 a4,4 0 0 1 0,8 h-30 a4,4 0 0 1 0,-8 z" />
+        <path
+            android:fillColor="#2C4B36"
+            android:pathData="M40,74 h9 a4,4 0 0 1 0,8 h-9 a4,4 0 0 1 0,-8 z" />
+        <path
+            android:fillColor="#F7F5E8"
+            android:pathData="M40,60 C37,66 35,69 30,71 C38,70 46,67 52,63 Z" />
+        <path
+            android:fillColor="#F7F5E8"
+            android:pathData="M54,24 A21,21 0 0 1 54,66 A21,21 0 0 1 54,24 Z" />
+        <path
+            android:fillColor="#3D6247"
+            android:pathData="M45,40 h18 a5,5 0 0 1 0,10 h-18 a5,5 0 0 1 0,-10 z" />
+    </group>
+
 </vector>

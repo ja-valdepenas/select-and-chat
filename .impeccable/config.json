@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "radial-halo",
+        "value": "*",
+        "files": [
+          "docs/logo-concepts.html"
+        ],
+        "createdAt": "2026-09-21T17:42:47.517Z",
+        "reason": "Claude's call: the radial wash is a mock phone wallpaper behind the icon shelf, the surface a launcher icon actually sits on. Judging these marks against a flat fill would be a worse test."
+      }
+    ]
+  }
+}
